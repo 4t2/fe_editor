@@ -11,7 +11,6 @@ window.addEvent('domready', function() {
 	
 	feToolbar.setState = function(checked, flash)
 	{
-console.log(checked);
 		this.setStyle('background-image', 'url(system/modules/fe_editor/html/images/application'+(checked==1?'_edit.png':'.png')+')');
 		this.store('checked', checked);
 		
@@ -43,6 +42,11 @@ console.log(checked);
 	feToolbar.addEvent('click', function(e)
 	{
 		this.setState((this.retrieve('checked')==1?0:1), true);
+	});
+	
+	
+	window.addEvent('mb_close', function(e) {
+		//window.location.reload();
 	});
 
 });
