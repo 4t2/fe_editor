@@ -1,0 +1,87 @@
+
+#fee_toolbar
+{
+	position: fixed;
+	top: 0;
+	left:  0;
+	height: 26px;
+	width:  36px;
+	padding: 0;
+	z-index: 999;
+	border-right: 2px solid black;
+	border-bottom: 2px solid black;
+	border-bottom-right-radius: 5px;
+	font-size: 12px;
+	line-height: 0;
+	background: url('../images/application.png') no-repeat 10px 5px #fff;
+	-moz-box-shadow: 1px 1px 2px #858585;
+	-webkit-box-shadow: 1px 1px 2px #858585;
+	box-shadow: 1px 1px 2px #858585;
+	cursor: pointer;
+}
+#fee_toolbar img
+{
+	margin-top: 4px;
+}
+
+.fee_editable:hover,
+.fee_flash,
+.mobile .fee_editable
+{
+	outline: 2px dotted black;
+	outline-offset: -2px;
+/*
+	background-color: #acdcfc;
+	z-index: 999;
+*/
+}
+
+.fee_editable:hover > *
+{
+/*	opacity: 0.5!important; */
+}
+
+.ce_toolbar
+{
+	visibility: hidden;
+	position: absolute;
+	width: 120px;
+	height: 40px;
+	background-color: #fff;
+	border: 2px solid black;
+	border-bottom-right-radius: 5px;
+	font-size: 12px !important;
+}
+.ce_toolbar li {
+	margin: 0 !important;
+	padding: 2px 4px !important;
+	display: inline-block;
+	list-style-type: none;
+}
+.ce_toolbar ul
+{
+	margin: 0 !important;
+	padding: 0 !important;
+}
+.ce_toolbar li a:hover
+{
+	outline: 1px dotted silver;
+}
+.ce_toolbar p {
+	margin: 0 2px 0 4px !important;
+	padding: 0 !important;
+	font: normal normal 12px/0 sans-serif;
+	text-decoration: none;
+	text-transform: none;
+	color: black;
+}
+.ce_toolbar a::after
+{
+	content: "" !important;
+}
+.fee_editable:hover .ce_toolbar,
+.fee_flash .ce_toolbar,
+.mobile .fee_editable .ce_toolbar
+{
+	visibility: visible;
+}
