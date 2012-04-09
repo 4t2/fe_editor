@@ -4,18 +4,16 @@ window.addEvent('domready', function() {
 	{
 		'id' : 'fee_toolbar'
 	});
-	
+
 	feToolbar.inject($(document.body), 'top');
-	
-	//feToolbar.store('checked', Cookie.read('fee_checked', 0));
-	
+
 	feToolbar.setState = function(checked, flash)
 	{
 		this.setStyle('background-image', 'url(system/modules/fe_editor/html/images/application'+(checked==1?'_edit.png':'.png')+')');
 		this.store('checked', checked);
-		
+
 		Cookie.write('fee_checked', checked);
-		
+
 		if (checked==1)
 		{
 			$$('.fe_editor').addClass('fee_editable');
@@ -35,7 +33,7 @@ window.addEvent('domready', function() {
 			$$('.fe_editor').removeClass('fee_editable');
 		}
 	};
-	
+
 	state = Cookie.read('fee_checked');
 	feToolbar.setState((state=='null'?0:state), false);
 
@@ -43,8 +41,8 @@ window.addEvent('domready', function() {
 	{
 		this.setState((this.retrieve('checked')==1?0:1), true);
 	});
-	
-	
+
+
 	window.addEvent('mb_close', function(e) {
 		//window.location.reload();
 	});

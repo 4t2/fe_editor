@@ -33,29 +33,26 @@ class FrontendEditorHook extends Controller
 
 	public function __construct()
 	{
-		if (isset($_COOKIE['BE_USER_AUTH']) && (TL_MODE == 'FE' || defined('EX_TL_MODE_FE')))
+		$this->import('EditorUser', 'User');
+
+		if ($this->isActive = $this->User->authenticate())
 		{
-			$this->import('EditorUser', 'User');
-
-			if ($this->isActive = $this->User->authenticate())
+			if (is_array($GLOBALS['TL_CSS']))
 			{
-				if (is_array($GLOBALS['TL_CSS']))
-				{
-					$GLOBALS['TL_CSS'][] = 'system/modules/fe_editor/html/css/fee.css';
-				}
-				else
-				{
-					$GLOBALS['TL_CSS'] = array('system/modules/fe_editor/html/css/fee.css');
-				}
+				$GLOBALS['TL_CSS'][] = 'system/modules/fe_editor/html/css/fee.css';
+			}
+			else
+			{
+				$GLOBALS['TL_CSS'] = array('system/modules/fe_editor/html/css/fee.css');
+			}
 
-				if (is_array($GLOBALS['TL_JAVASCRIPT']))
-				{
-					$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/html/js/fee.js';
-				}
-				else
-				{
-					$GLOBALS['TL_JAVASCRIPT'] = array('system/modules/fe_editor/html/js/fee.js');
-				}
+			if (is_array($GLOBALS['TL_JAVASCRIPT']))
+			{
+				$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/html/js/fee.js';
+			}
+			else
+			{
+				$GLOBALS['TL_JAVASCRIPT'] = array('system/modules/fe_editor/html/js/fee.js');
 			}
 		}
 
@@ -64,11 +61,14 @@ class FrontendEditorHook extends Controller
 
 	public function generatePageHook(Database_Result $objPage, Database_Result $objLayout, PageRegular $objPageRegular)
 	{
-		$mootools = unserialize($objLayout->mootools);
-		$mootools[] = 'moo_mediabox';
-		$mootools = array_unique($mootools);
-		
-		$objLayout->mootools = serialize($mootools);
+		if ($this->isActive)
+		{
+			$mootools = unserialize($objLayout->mootools);
+			$mootools[] = 'moo_mediabox';
+			$mootools = array_unique($mootools);
+			
+			$objLayout->mootools = serialize($mootools);
+		}
 	}
 
 	public function getContentElementHook($objElement, $strBuffer)
@@ -87,14 +87,7 @@ class FrontendEditorHook extends Controller
 				$match[2] = str_replace('>', ' class="'.$strClass.'">', $match[2]);
 			}
 			
-			if ($objPage->outputFormat == 'xhtml')
-			{
-				$mediabox = 'rel="lightbox[external 950 700]"';
-			}
-			else
-			{
-				$mediabox = 'data-lightbox="lightbox[external 950 700]"';
-			}
+			$mediabox = ($objPage->outputFormat=='xhtml'?'rel':'data-lightbox').'="lightbox[external 950 700]"';
 
 			$strToolbar = '<div class="ce_toolbar"><ul><li><img src="system/themes/default/images/settings.gif" width="16" height="16" alt="a"> </li>';
 			$strToolbar .= '<li><a '.$mediabox.' href="contao/main.php?do=page&amp;act=edit&amp;id='.$objPage->id.'" title="'.sprintf($GLOBALS['TL_LANG']['FEE']['edit_page'], $objPage->id).'"><img src="system/themes/default/images/page.gif" width="16" height="16" alt="a"></a></li>';
