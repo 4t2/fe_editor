@@ -86,8 +86,8 @@ class FrontendEditorHook extends Controller
 			{
 				$match[2] = str_replace('>', ' class="'.$strClass.'">', $match[2]);
 			}
-			
-			$mediabox = ($objPage->outputFormat=='xhtml'?'rel':'data-lightbox').'="lightbox[external 950 700]"';
+
+			$mediabox = ($objPage->outputFormat=='xhtml'?'rel':'data-lightbox').'="lightbox[external 980 700]"';
 
 			$strToolbar = '<div class="ce_toolbar"><ul><li><img src="system/themes/default/images/settings.gif" width="16" height="16" alt="a"> </li>';
 			$strToolbar .= '<li><a '.$mediabox.' href="contao/main.php?do=page&amp;act=edit&amp;id='.$objPage->id.'" title="'.sprintf($GLOBALS['TL_LANG']['FEE']['edit_page'], $objPage->id).'"><img src="system/themes/default/images/page.gif" width="16" height="16" alt="a"></a></li>';
