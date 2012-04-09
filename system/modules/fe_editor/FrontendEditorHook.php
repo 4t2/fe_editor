@@ -30,6 +30,7 @@
 class FrontendEditorHook extends Controller
 {
 	protected $isActive = false;
+	protected $mediabox;
 
 	public function __construct()
 	{
@@ -54,6 +55,10 @@ class FrontendEditorHook extends Controller
 			{
 				$GLOBALS['TL_JAVASCRIPT'] = array('system/modules/fe_editor/html/js/fee.js');
 			}
+			
+			global $objPage;
+
+			$this->mediabox = ($objPage->outputFormat=='xhtml'?'rel':'data-lightbox').'="lightbox[external 980 700]"';
 		}
 
 		parent::__construct();
@@ -69,6 +74,11 @@ class FrontendEditorHook extends Controller
 			
 			$objLayout->mootools = serialize($mootools);
 		}
+	}
+	
+	public function parseArticlesHook($objTemplate, $arrArticles)
+	{
+		$objTemplate->text = '<!-- FEE a '.$this->mediabox.' href="contao/main.php?do=news&amp;table=tl_news&amp;act=edit&amp;id='.$objTemplate->id.'" title="'.sprintf($GLOBALS['TL_LANG']['FEE']['edit_news'], $objTemplate->id).'"><img src="system/themes/default/images/news.gif" width="16" height="16" alt="n"></a FEE -->'.$objTemplate->text;
 	}
 
 	public function getContentElementHook($objElement, $strBuffer)
@@ -87,14 +97,19 @@ class FrontendEditorHook extends Controller
 				$match[2] = str_replace('>', ' class="'.$strClass.'">', $match[2]);
 			}
 
-			$mediabox = ($objPage->outputFormat=='xhtml'?'rel':'data-lightbox').'="lightbox[external 980 700]"';
-
 			$strToolbar = '<div class="ce_toolbar"><ul><li><img src="system/themes/default/images/settings.gif" width="16" height="16" alt="a"> </li>';
-			$strToolbar .= '<li><a '.$mediabox.' href="contao/main.php?do=page&amp;act=edit&amp;id='.$objPage->id.'" title="'.sprintf($GLOBALS['TL_LANG']['FEE']['edit_page'], $objPage->id).'"><img src="system/themes/default/images/page.gif" width="16" height="16" alt="a"></a></li>';
-			$strToolbar .= '<li><a '.$mediabox.' href="contao/main.php?do=article&amp;table=tl_content&amp;id='.$objElement->pid.'" title="'.sprintf($GLOBALS['TL_LANG']['FEE']['edit_article'], $objElement->pid).'"><img src="system/themes/default/images/article.gif" width="16" height="16" alt="a"></a></li>';
-			$strToolbar .= '<li><a '.$mediabox.' href="contao/main.php?do=article&amp;table=tl_content&amp;act=edit&amp;id='.$objElement->id.'" title="'.sprintf($GLOBALS['TL_LANG']['FEE']['edit_content'], $objElement->id).'"><img src="system/themes/default/images/edit.gif" width="12" height="16" alt="c"></a></li>';
-			$strToolbar .= '</ul><p>'.$objElement->type.' ID: '.$objElement->id.'</p></div>';
+			$strToolbar .= '<li><a '.$this->mediabox.' href="contao/main.php?do=page&amp;act=edit&amp;id='.$objPage->id.'" title="'.sprintf($GLOBALS['TL_LANG']['FEE']['edit_page'], $objPage->id).'"><img src="system/themes/default/images/page.gif" width="16" height="16" alt="p"></a></li>';
+			$strToolbar .= '<li><a '.$this->mediabox.' href="contao/main.php?do=article&amp;table=tl_content&amp;id='.$objElement->pid.'" title="'.sprintf($GLOBALS['TL_LANG']['FEE']['edit_article'], $objElement->pid).'"><img src="system/themes/default/images/article.gif" width="16" height="16" alt="a"></a></li>';
+			$strToolbar .= '<li><a '.$this->mediabox.' href="contao/main.php?do=article&amp;table=tl_content&amp;act=edit&amp;id='.$objElement->id.'" title="'.sprintf($GLOBALS['TL_LANG']['FEE']['edit_content'], $objElement->id).'"><img src="system/themes/default/images/edit.gif" width="12" height="16" alt="c"></a></li>';
 			
+			if (preg_match('~<!-- FEE (.*) FEE -->~iU', $match[3], $subMatch))
+			{
+				$match[3] = str_replace($subMatch[0], '', $match[3]);
+				$strToolbar .= '<li><'.$subMatch[1].'></li>';
+			}
+			
+			$strToolbar .= '</ul><p>'.$objElement->type.' ID: '.$objElement->id.'</p></div>';
+
 			$strBuffer = $match[1].$match[2].$strToolbar.$match[3];
 		}
 

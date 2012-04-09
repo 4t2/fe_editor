@@ -35,3 +35,4 @@
 $GLOBALS['TL_LANG']['FEE']['edit_page'] = 'Seite ID %d bearbeiten';
 $GLOBALS['TL_LANG']['FEE']['edit_article'] = 'Artikel ID %d bearbeiten';
 $GLOBALS['TL_LANG']['FEE']['edit_content'] = 'Inhaltselement ID %d bearbeiten';
+$GLOBALS['TL_LANG']['FEE']['edit_news'] = 'Nachrichtenbeitrag ID %d bearbeiten';
