@@ -62,7 +62,15 @@ class FrontendEditorHook extends Controller
 				$this->mediabox = ($objPage->outputFormat=='xhtml'?'rel':'data-lightbox').'="lightbox[external 980 700]"';
 				fix for Firefox
 			*/
-			$this->mediabox = ($objPage->outputFormat=='xhtml'?'rel':'data-lightbox').'="lightbox 980 700"';
+			if ($objPage->outputFormat=='xhtml')
+			{
+				$this->mediabox = 'rel="lightbox[external 980 700]"';
+			}
+			else
+			{
+				$this->mediabox = 'data-lightbox="lightbox 980 700"';
+			}
+			
 		}
 
 		parent::__construct();
