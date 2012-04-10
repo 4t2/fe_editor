@@ -55,10 +55,14 @@ class FrontendEditorHook extends Controller
 			{
 				$GLOBALS['TL_JAVASCRIPT'] = array('system/modules/fe_editor/html/js/fee.js');
 			}
-			
+
 			global $objPage;
 
-			$this->mediabox = ($objPage->outputFormat=='xhtml'?'rel':'data-lightbox').'="lightbox[external 980 700]"';
+			/*
+				$this->mediabox = ($objPage->outputFormat=='xhtml'?'rel':'data-lightbox').'="lightbox[external 980 700]"';
+				fix for Firefox
+			*/
+			$this->mediabox = ($objPage->outputFormat=='xhtml'?'rel':'data-lightbox').'="lightbox 980 700"';
 		}
 
 		parent::__construct();
@@ -71,7 +75,7 @@ class FrontendEditorHook extends Controller
 			$mootools = unserialize($objLayout->mootools);
 			$mootools[] = 'moo_mediabox';
 			$mootools = array_unique($mootools);
-			
+
 			$objLayout->mootools = serialize($mootools);
 		}
 	}
