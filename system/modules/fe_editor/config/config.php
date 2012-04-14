@@ -34,6 +34,6 @@
 if (isset($_COOKIE['BE_USER_AUTH']) && (TL_MODE == 'FE' || defined('EX_TL_MODE_FE')))
 {
 	$GLOBALS['TL_HOOKS']['parseArticles'][] = array('FrontendEditorHook', 'parseArticlesHook');
-	$GLOBALS['TL_HOOKS']['generatePage'][] = array('FrontendEditorHook', 'generatePageHook');
+	#$GLOBALS['TL_HOOKS']['generatePage'][] = array('FrontendEditorHook', 'generatePageHook');
 	$GLOBALS['TL_HOOKS']['getContentElement'][] = array('FrontendEditorHook', 'getContentElementHook');
 }

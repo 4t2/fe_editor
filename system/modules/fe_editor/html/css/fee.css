@@ -1,5 +1,5 @@
 
-#fee_toolbar
+#fee_settings
 {
 	position: fixed;
 	top: 0;
@@ -7,7 +7,7 @@
 	height: 26px;
 	width:  36px;
 	padding: 0;
-	z-index: 999;
+	z-index: 9999;
 	border-right: 2px solid black;
 	border-bottom: 2px solid black;
 	border-bottom-right-radius: 5px;
@@ -19,7 +19,7 @@
 	box-shadow: 1px 1px 2px #858585;
 	cursor: pointer;
 }
-#fee_toolbar img
+#fee_settings img
 {
 	margin-top: 4px;
 }
@@ -30,58 +30,75 @@
 {
 	outline: 2px dotted black;
 	outline-offset: -2px;
-/*
-	background-color: #acdcfc;
-	z-index: 999;
-*/
 }
 
-.fee_editable:hover > *
-{
-/*	opacity: 0.5!important; */
-}
-
-.ce_toolbar
+.fee_toolbar
 {
 	visibility: hidden;
 	position: absolute;
-	width: 120px;
-	height: 40px;
+	margin-top: -32px;
+	padding: 0 !important;
+	height: 60px;
+	font-size: 12px;
+}
+.fee_toolbar ul
+{
+	height: 30px;
+	margin: 0 !important;
+	padding: 0 !important;
+	min-width: 100px;
+	max-width: 120px;
 	background-color: #fff;
 	border: 2px solid black;
-	border-bottom-right-radius: 5px;
-	font-size: 12px !important;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	border-bottom: none;
 }
-.ce_toolbar li {
-	margin: 0 !important;
-	padding: 2px 4px !important;
+.fee_toolbar li {
+	margin: 4px!important;
+	padding: 2px 2px 0!important;
 	display: inline-block;
 	list-style-type: none;
+	line-height: 0;
 }
-.ce_toolbar ul
+.fee_toolbar li.fee_content_edit {
+	padding-right: 8px !important;
+	border-right: 1px solid silver;
+}
+.fee_toolbar li a {
+	padding: 0 !important;
+	width:  16px;
+	height:  16px;
+	line-height: 0!important;
+	border-bottom: 1px solid white;
+}
+.fee_toolbar li a:hover
 {
+	border-bottom: 1px solid silver;
+}
+.fee_toolbar li a img {
+	margin: 0!important;
+	padding: 0!important;
+}
+.fee_toolbar p {
 	margin: 0 !important;
-	padding: 0 !important;
-}
-.ce_toolbar li a:hover
-{
-	outline: 1px dotted silver;
-}
-.ce_toolbar p {
-	margin: 0 2px 0 4px !important;
-	padding: 0 !important;
+	padding: 2px !important;
+	min-width: 120px;
+	border: 2px solid black;
+	border-bottom-right-radius: 5px;
 	font: normal normal 12px/0 sans-serif;
 	text-decoration: none;
 	text-transform: none;
-	color: black;
+	color: white;
+	background-color: gray;
 }
-.ce_toolbar a::after
+.fee_toolbar a::after
 {
 	content: "" !important;
 }
-.fee_editable:hover .ce_toolbar,
-.fee_flash .ce_toolbar,
-.mobile .fee_editable .ce_toolbar
+.fee_editable:hover .fee_toolbar,
+.fee_flash .fee_toolbar,
+.mobile .fee_editable .fee_toolbar
 {
 	visibility: visible;
 }
