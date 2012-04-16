@@ -40,6 +40,7 @@
 	padding: 0 !important;
 	height: 60px;
 	font-size: 12px;
+	z-index: 9999;
 }
 .fee_toolbar ul
 {

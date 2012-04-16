@@ -48,20 +48,49 @@ window.addEvent('domready', function() {
 	{
 		$$('a.cerabox').cerabox({
 			width: '960px',
+			height: '100%',
 			group: false,
 			fixedPosition: false,
 			animation: 'ease',
 			events: {
 				onOpen: function(e) {
-					//console.log('onOpen');
 					reloadOnClose = false;
 				},
-				onChange: function(e) {
-					//console.log('onChange ' + e);
+				onChange: function(src) {
 					reloadOnClose = true;
 				},
 				onClose: function(e) {
-					//console.log('onClose');
+					if (reloadOnClose)
+					{
+						window.location.reload();
+					}
+				}
+			}
+		});
+
+		boxSrc = '';
+
+		$$('a.cerabox-content').cerabox({
+			width: '730px',
+			height: '100%',
+			group: false,
+			fixedPosition: false,
+			animation: 'ease',
+			events: {
+				onOpen: function(src) {
+					reloadOnClose = false;
+					boxSrc = src;
+				},
+				onChange: function(src) {
+					reloadOnClose = true;
+
+					if (boxSrc != src)
+					{
+						CeraBoxWindow.close();
+					}
+
+				},
+				onClose: function(e) {
 					if (reloadOnClose)
 					{
 						window.location.reload();
