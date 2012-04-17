@@ -1,4 +1,21 @@
-window.addEvent('domready', function() {
+/**
+ * @package		fe_editor
+ *
+ * @author 		Mario Müller
+ * @since 		2012-04-17
+ * @version 	1.1.0
+ *
+ * This package requires
+ * - MooTools 1.4 >
+ * - MooTools More Assets
+ *
+ * @license http://opensource.org/licenses/lgpl-3.0.html
+ *
+ * Copyright (c) 2012 Lingo4you, <http://www.lingo4u.de/>
+ *
+ */
+ 
+ window.addEvent('domready', function() {
 
 	feeSettings = new Element('div',
 	{
@@ -116,8 +133,7 @@ window.addEvent('domready', function() {
 	$$('.fee_content_edit a')
 		.addEvent('mouseenter', function(e) {
 			this.getParent('.fe_editor')
-				.setStyle('outline-color', 'red')
-				.highlight();
+				.setStyle('outline-color', 'red');
 		})
 		.addEvent('mouseleave', function(e) {
 			this.getParent('.fe_editor').setStyle('outline-color', 'black');
@@ -125,14 +141,10 @@ window.addEvent('domready', function() {
 	
 	$$('.fee_content_add a')
 		.addEvent('mouseenter', function(e) {
-			//this.getParent('.fe_editor').store(this.getParent('.fe_editor').getStyle('border-bottom'));
-			//this.getParent('.fe_editor').setStyle('border-bottom', '10px solid green');
 			this.getParent('.fe_editor')
-				.setStyle('outline-color', 'green')
-				.highlight('#0f0');
+				.setStyle('outline-color', 'green');
 		})
 		.addEvent('mouseleave', function(e) {
-			//this.getParent('.fe_editor').setStyle('border-bottom', this.getParent('.fe_editor').retrieve('border-bottom'));
 			this.getParent('.fe_editor').setStyle('outline-color', 'black');
 		});
 
@@ -142,13 +154,10 @@ window.addEvent('domready', function() {
 				.setStyles({
 					'outline': '2px dotted red',
 					'outline-offset': '-2px'
-				})
-				.highlight();
-			//this.getParent('.fe_editor').setStyle('outline', 'none');
+				});
 		})
 		.addEvent('mouseleave', function(e) {
 			this.getParent('.mod_article').setStyle('outline', 'none');
-			//this.getParent('.fe_editor').setStyle('outline', '2px dotted black');
 		});
 
 	$$('.fee_page_edit a')
@@ -158,11 +167,8 @@ window.addEvent('domready', function() {
 					'outline': '5px dotted red',
 					'outline-offset': '-5px',
 				});
-			//this.getParent('.fe_editor').setStyle('outline', 'none');
 		})
 		.addEvent('mouseleave', function(e) {
 			$(document.body).setStyle('outline', 'none');
-			//this.getParent('.fe_editor').setStyle('outline', '2px dotted black');
 		});
-
 });

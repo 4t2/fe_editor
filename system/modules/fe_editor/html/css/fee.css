@@ -91,7 +91,7 @@
 	text-decoration: none;
 	text-transform: none;
 	color: white;
-	background-color: gray;
+	background-color: #999;
 }
 .fee_toolbar a::after
 {
