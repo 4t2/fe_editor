@@ -50,7 +50,7 @@
 	min-width: 100px;
 	max-width: 120px;
 	background-color: #fff;
-	border: 2px solid black;
+	border: 2px solid #222;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
 	border-bottom: none;
@@ -82,16 +82,19 @@
 	padding: 0!important;
 }
 .fee_toolbar p {
+	height: 18px !important; /* hinzugefügt wg. deutlicherer Lesbarkeit*/
 	margin: 0 !important;
-	padding: 2px !important;
 	min-width: 120px;
+	padding: 4px 2px 0 4px!important;
 	border: 2px solid black;
 	border-bottom-right-radius: 5px;
-	font: normal normal 12px/0 sans-serif;
+	background: none repeat scroll 0 0 black;
+	opacity: 0.6;
+	color: white;
+	font: normal normal 12px/18px sans-serif;
 	text-decoration: none;
 	text-transform: none;
-	color: white;
-	background-color: #999;
+	text-align: left;
 }
 .fee_toolbar a::after
 {

@@ -34,11 +34,11 @@
 		if (checked==1)
 		{
 			$$('.fe_editor').addClass('fee_editable');
-			
+
 			if (flash)
 			{
 				$$('.fe_editor').addClass('fee_flash');
-				
+
 				setTimeout(function()
 				{
 					$$('.fe_editor').removeClass('fee_flash');
@@ -64,7 +64,7 @@
 	if (!Browser.Platform.ios && !Browser.Platform.android && !Browser.Platform.webos)
 	{
 		$$('a.cerabox').cerabox({
-			width: '960px',
+			width: '980px',
 			height: '100%',
 			group: false,
 			fixedPosition: false,
@@ -88,7 +88,7 @@
 		boxSrc = '';
 
 		$$('a.cerabox-content').cerabox({
-			width: '730px',
+			width: '750px',
 			height: '100%',
 			group: false,
 			fixedPosition: false,
@@ -103,6 +103,7 @@
 
 					if (boxSrc != src)
 					{
+//console.log(boxSrc + ' :: ' + src);
 						CeraBoxWindow.close();
 					}
 
@@ -120,6 +121,14 @@
 	{
 		$$('a.cerabox').set('target', '_blank');
 	}
+
+	$$('.fee_toolbar').getParent()
+		.addEvent('mouseenter', function(e) {
+			if (this.getCoordinates().top < 35)
+			{
+				this.getElement('.fee_toolbar').setStyle('margin-top', '0');
+			}
+		});
 
 	$$('.fee_toolbar a')
 		.addEvent('mouseenter', function(e) {

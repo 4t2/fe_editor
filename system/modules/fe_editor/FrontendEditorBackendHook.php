@@ -39,12 +39,10 @@ class FrontendEditorBackendHook extends Controller
 
 			$strContent = preg_replace('~<div id="tl_buttons">.*</div>~isU', '$1', $strContent);
 			
+			#$strContent = preg_replace('~(<div class="tl_formbody_submit")~is', '$1 style="position:fixed; width:726px; height:53px;"', $strContent);
+			
 			$strContent = preg_replace('~<input[^>]*saveNcreate[^>]*>~', '', $strContent);
 			$strContent = preg_replace('~<input[^>]*saveNback[^>]*>~', '', $strContent);
-			
-			#$strContent = preg_replace('~(id="saveNclose")~', '$1 onclick="console.log(this.getParent(\'form\').send(); window.close(); return false;"', $strContent);
-			#$strContent = preg_replace('~(id="saveNclose")~', '$1 onclick="window.close(); return false;"', $strContent);
-			#$strContent = preg_replace('~action="([^"]+)"~', 'action="$1&fee_close=1', $strContent);			
 		}
 		
 		return $strContent;

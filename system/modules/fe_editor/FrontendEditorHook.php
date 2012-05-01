@@ -39,25 +39,19 @@ class FrontendEditorHook extends Controller
 		{
 			$this->isActive = true;
 
-			if (is_array($GLOBALS['TL_CSS']))
+			if (!is_array($GLOBALS['TL_CSS']))
 			{
-				$GLOBALS['TL_CSS'][] = 'system/modules/fe_editor/html/css/fee.css';
-				$GLOBALS['TL_CSS'][] = 'system/modules/fe_editor/plugins/cerabox/style/cerabox.css';
+				$GLOBALS['TL_CSS'] = array();
 			}
-			else
-			{
-				$GLOBALS['TL_CSS'] = array('system/modules/fe_editor/html/css/fee.css', 'system/modules/fe_editor/plugins/cerabox/style/cerabox.css');
-			}
+			$GLOBALS['TL_CSS'][] = 'system/modules/fe_editor/html/css/fee.css';
+			$GLOBALS['TL_CSS'][] = 'system/modules/fe_editor/plugins/cerabox/style/cerabox.css';
 
-			if (is_array($GLOBALS['TL_JAVASCRIPT']))
+			if (!is_array($GLOBALS['TL_JAVASCRIPT']))
 			{
-				$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/plugins/cerabox/cerabox.min.js';
-				$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/html/js/fee.min.js';
+				$GLOBALS['TL_JAVASCRIPT'] = array();
 			}
-			else
-			{
-				$GLOBALS['TL_JAVASCRIPT'] = array('system/modules/fe_editor/plugins/cerabox/cerabox.min.js', 'system/modules/fe_editor/html/js/fee.min.js');
-			}
+			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/plugins/cerabox/cerabox.min.js';
+			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/html/js/fee.min.js';
 		}
 
 		parent::__construct();
@@ -78,9 +72,7 @@ class FrontendEditorHook extends Controller
 
 	public function parseArticlesHook($objTemplate, $arrArticles)
 	{
-		#$objTemplate->text = '<!-- FEE a '.$this->mediabox.' href="contao/main.php?do=news&amp;table=tl_news&amp;act=edit&amp;id='.$objTemplate->id.'" title="'.sprintf($GLOBALS['TL_LANG']['FEE']['edit_news'], $objTemplate->id).'"><img src="system/modules/fe_editor/html/images/pencil.png" width="16" height="16" alt="n"></a FEE -->'.$objTemplate->text;
 		$objTemplate->text = '<!-- FEE-NEWS '.$objTemplate->id.' '.$objTemplate->pid.' NEWS-FEE -->'.$objTemplate->text;
-		#$objTemplate->text .= '<!-- TEST '.var_export($arrArticles, true).' -->';
 	}
 
 	public function getContentElementHook($objElement, $strBuffer)
