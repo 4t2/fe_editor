@@ -2,8 +2,8 @@
  * @package		fe_editor
  *
  * @author 		Mario Müller
- * @since 		2012-04-17
- * @version 	1.1.0
+ * @since 		2012-05-06
+ * @version 	1.1.2
  *
  * This package requires
  * - MooTools 1.4 >
@@ -65,7 +65,7 @@
 	{
 		$$('a.cerabox').cerabox({
 			width: '980px',
-			height: '100%',
+			height: $(window).getSize().y+'px',
 			group: false,
 			fixedPosition: false,
 			animation: 'ease',
@@ -89,24 +89,34 @@
 
 		$$('a.cerabox-content').cerabox({
 			width: '750px',
-			height: '100%',
+			height: $(window).getSize().y+'px',
 			group: false,
 			fixedPosition: false,
 			animation: 'ease',
 			events: {
-				onOpen: function(src) {
+				onOpen: function() {
 					reloadOnClose = false;
-					boxSrc = src;
-				},
-				onChange: function(src) {
-					reloadOnClose = true;
 
-					if (boxSrc != src)
+					try
 					{
-//console.log(boxSrc + ' :: ' + src);
-						CeraBoxWindow.close();
+						iframe = $('cerabox').getElement('iframe').contentWindow;
+						boxSrc = iframe.document.location.href;
 					}
-
+					catch (err)	{}
+				},
+				onChange: function() {
+					reloadOnClose = true;
+					
+					try
+					{
+						iframe = $('cerabox').getElement('iframe').contentWindow;
+						
+						if (iframe != undefined && boxSrc != iframe.document.location.href)
+						{
+							CeraBoxWindow.close();
+						}
+					}
+					catch (err)	{}
 				},
 				onClose: function(e) {
 					if (reloadOnClose)
@@ -174,7 +184,7 @@
 			$(document.body)
 				.setStyles({
 					'outline': '5px dotted red',
-					'outline-offset': '-5px',
+					'outline-offset': '-5px'
 				});
 		})
 		.addEvent('mouseleave', function(e) {

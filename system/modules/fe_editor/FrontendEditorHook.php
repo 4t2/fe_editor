@@ -51,7 +51,7 @@ class FrontendEditorHook extends Controller
 				$GLOBALS['TL_JAVASCRIPT'] = array();
 			}
 			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/plugins/cerabox/cerabox.min.js';
-			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/html/js/fee.min.js';
+			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/html/js/fee.js';
 		}
 
 		parent::__construct();

@@ -864,18 +864,7 @@ var CeraBoxWindow = (function(window) {
 								addNavButtons();
 
 								// onChange event
-/* >>> Contao frontend_editor patch - start */
-								//currentInstance.options.events.onChange.call(currentInstance, currentItem, currentInstance.collection);
-								src = currentItem;
-								iframe = cerabox.getElement('iframe');
-								
-								if (iframe != undefined)
-								{
-									src = iframe.contentWindow.document.location.href;
-								}
-
-								currentInstance.options.events.onChange.call(currentInstance, src, currentInstance.collection);
-/* <<< Contao frontend_editor patch - end */
+								currentInstance.options.events.onChange.call(currentInstance, currentItem, currentInstance.collection);
 							});
 				}
 				return;
