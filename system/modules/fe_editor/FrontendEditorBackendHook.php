@@ -33,13 +33,11 @@ class FrontendEditorBackendHook extends Controller
 	{
 		if ($strTemplate == 'be_main' && $this->Input->get('fee') == 1)
 		{
-			$strContent = preg_replace('~<div id="header".*(<div id="container")~is', '$1 style="width:730px"', $strContent);
-			$strContent = preg_replace('~<div id="left".*(<div id="main")~is', '$1 style="margin-left:0; margin-top:5px;"', $strContent);
-			$strContent = preg_replace('~<div id="footer".*(<script)~is', '$1', $strContent);
+			$strContent = preg_replace('~<div id="header".*<div id="container"~is', '<div id="container" style="width:730px"', $strContent);
+			$strContent = preg_replace('~<div id="left".*<div id="main"~is', '<div id="main" style="margin-left:0; margin-top:5px;"', $strContent);
+			$strContent = preg_replace('~<div id="footer".*<script~is', '<script', $strContent);
 
 			$strContent = preg_replace('~<div id="tl_buttons">.*</div>~isU', '$1', $strContent);
-			
-			#$strContent = preg_replace('~(<div class="tl_formbody_submit")~is', '$1 style="position:fixed; width:726px; height:53px;"', $strContent);
 			
 			$strContent = preg_replace('~<input[^>]*saveNcreate[^>]*>~', '', $strContent);
 			$strContent = preg_replace('~<input[^>]*saveNback[^>]*>~', '', $strContent);
