@@ -14,7 +14,7 @@
  * Copyright (c) 2012 Lingo4you, <http://www.lingo4u.de/>
  *
  */
- 
+
  window.addEvent('domready', function() {
 
 	feeSettings = new Element('div',
@@ -60,6 +60,8 @@
 	});
 
 	reloadOnClose = false;
+	bodyPosition = 'relative';
+	bodyTop = 0;
 
 	if (!Browser.Platform.ios && !Browser.Platform.android && !Browser.Platform.webos)
 	{
@@ -67,16 +69,25 @@
 			width: '980px',
 			height: $(window).getSize().y+'px',
 			group: false,
-			fixedPosition: false,
+			fixedPosition: true,
 			animation: 'ease',
+			loaderAtItem: true,
+			clickToClose: false,
+			clickToCloseOverlay: false,
 			events: {
 				onOpen: function(e) {
+					bodyTop = $(document.body).getScroll().y;
+					bodyPosition = $(document.body).getStyle('position');
+					$(document.body).setStyle('position', 'fixed');
 					reloadOnClose = false;
 				},
 				onChange: function(src) {
 					reloadOnClose = true;
 				},
 				onClose: function(e) {
+					$(document.body).setStyle('position', bodyPosition);
+					$(document.body).scrollTo(0, bodyTop);
+
 					if (reloadOnClose)
 					{
 						window.location.reload();
@@ -91,10 +102,15 @@
 			width: '750px',
 			height: $(window).getSize().y+'px',
 			group: false,
-			fixedPosition: false,
+			fixedPosition: true,
 			animation: 'ease',
+			loaderAtItem: true,
+			clickToCloseOverlay: false,
 			events: {
 				onOpen: function() {
+					bodyTop = $(document.body).getScroll().y;
+					bodyPosition = $(document.body).getStyle('position');
+					$(document.body).setStyle('position', 'fixed');
 					reloadOnClose = false;
 
 					try
@@ -119,6 +135,9 @@
 					catch (err)	{}
 				},
 				onClose: function(e) {
+					$(document.body).setStyle('position', bodyPosition);
+					$(document.body).scrollTo(0, bodyTop);
+
 					if (reloadOnClose)
 					{
 						window.location.reload();
