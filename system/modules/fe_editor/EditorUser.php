@@ -33,8 +33,8 @@
  * Class EditorUser
  *
  * Provide methods to manage back end users.
- * @copyright  Leo Feyer 2005-2012
- * @author     Leo Feyer <http://www.contao.org>
+ * @copyright  Mario Müller 2012
+ * @author     Mario Müller <http://www.lingolia.com>
  * @package    Model
  */
 class EditorUser extends User
@@ -57,12 +57,6 @@ class EditorUser extends User
 	 * @var string
 	 */
 	protected $strCookie = 'BE_USER_AUTH';
-
-	/**
-	 * Allowed excluded fields
-	 * @var array
-	 */
-	protected $alexf = array();
 
 
 	/**
@@ -90,79 +84,6 @@ class EditorUser extends User
 			{
 				$this->$k = deserialize($v);
 			}
-		}
-
-		$GLOBALS['TL_LANGUAGE'] = $this->language;
-		$GLOBALS['TL_USERNAME'] = $this->username;
-
-		$GLOBALS['TL_CONFIG']['showHelp'] = $this->showHelp;
-		$GLOBALS['TL_CONFIG']['useRTE'] = $this->useRTE;
-		$GLOBALS['TL_CONFIG']['useCE'] = $this->useCE;
-		$GLOBALS['TL_CONFIG']['thumbnails'] = $this->thumbnails;
-		$GLOBALS['TL_CONFIG']['backendTheme'] = $this->backendTheme;
-
-		// Inherit permissions
-		$always = array('alexf');
-		$depends = array('modules', 'themes', 'pagemounts', 'alpty', 'filemounts', 'fop', 'forms', 'formp');
-
-		// HOOK: Take custom permissions
-		if (is_array($GLOBALS['TL_PERMISSIONS']) && !empty($GLOBALS['TL_PERMISSIONS']))
-		{
-		    $depends = array_merge($depends, $GLOBALS['TL_PERMISSIONS']);
-		}
-
-		// Overwrite user permissions if only group permissions shall be inherited
-		if ($this->inherit == 'group')
-		{
-			foreach ($depends as $field)
-			{
-				$this->$field = array();
-			}
-		}
-
-		// Merge permissions
-		$inherit = in_array($this->inherit, array('group', 'extend')) ? array_merge($always, $depends) : $always;
-		$time = time();
-
-		foreach ((array) $this->groups as $id)
-		{
-			$objGroup = $this->Database->prepare("SELECT * FROM tl_user_group WHERE id=? AND disable!=1 AND (start='' OR start<$time) AND (stop='' OR stop>$time)")
-									   ->limit(1)
-									   ->execute($id);
-
-			if ($objGroup->numRows > 0)
-			{
-				foreach ($inherit as $field)
-				{
-					$value = deserialize($objGroup->$field);
-
-					if (is_array($value))
-					{
-						$this->$field = array_merge((is_array($this->$field) ? $this->$field : (strlen($this->$field) ? array($this->$field) : array())), $value);
-						$this->$field = array_unique($this->$field);
-					}
-				}
-			}
-		}
-
-		// Restore session
-		if (is_array($this->session))
-		{
-			$this->Session->setData($this->session);
-		}
-		else
-		{
-			$this->session = array();
-		}
-
-		// Make sure pagemounts and filemounts are set!
-		if (!is_array($this->pagemounts))
-		{
-			$this->pagemounts = array();
-		}
-		if (!is_array($this->filemounts))
-		{
-			$this->filemounts = array();
 		}
 	}
 

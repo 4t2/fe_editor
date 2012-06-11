@@ -33,9 +33,9 @@ class FrontendEditorHook extends Controller
 
 	public function __construct()
 	{
-		$this->import('EditorUser', 'User');
+		$this->import('EditorUser');
 
-		if ($this->User->authenticate() && $this->User->frontendEditor == 1)
+		if ($this->EditorUser->authenticate() && $this->EditorUser->frontendEditor == 1)
 		{
 			$this->isActive = true;
 
