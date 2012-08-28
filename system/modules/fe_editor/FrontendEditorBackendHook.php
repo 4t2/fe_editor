@@ -31,16 +31,24 @@ class FrontendEditorBackendHook extends Controller
 {
 	public function parseBackendTemplateHook($strContent, $strTemplate)
 	{
-		if ($strTemplate == 'be_main' && $this->Input->get('fee') == 1)
+		if ($strTemplate == 'be_main')
 		{
-			$strContent = preg_replace('~<div id="header".*<div id="container"~is', '<div id="container" style="width:730px"', $strContent);
-			$strContent = preg_replace('~<div id="left".*<div id="main"~is', '<div id="main" style="margin-left:0; margin-top:5px;"', $strContent);
-			$strContent = preg_replace('~<div id="footer".*<script~is', '<script', $strContent);
-
-			$strContent = preg_replace('~<div id="tl_buttons">.*</div>~isU', '$1', $strContent);
-			
-			$strContent = preg_replace('~<input[^>]*saveNcreate[^>]*>~', '', $strContent);
-			$strContent = preg_replace('~<input[^>]*saveNback[^>]*>~', '', $strContent);
+			if ($this->Input->post('feeHideOnClose') == 1)
+			{
+				$strContent = '<html><head><title>Close</title></head><body><p>Close</p></body></html>';
+			}
+			elseif ($this->Input->get('fee') == 1 || $this->Input->post('fee') == 1)
+			{
+				$strContent = preg_replace('~<div id="header".*<div id="container"~is', '<div id="container" style="width:730px"', $strContent);
+				$strContent = preg_replace('~<div id="left".*<div id="main"~is', '<div id="main" style="margin-left:0; margin-top:5px;"', $strContent);
+				$strContent = preg_replace('~<div id="footer".*<script~is', '<script', $strContent);
+	
+				$strContent = preg_replace('~<div id="tl_buttons">.*</div>~isU', '$1', $strContent);
+				
+				$strContent = preg_replace('~<input[^>]*saveNcreate[^>]*>~', '', $strContent);
+				#$strContent = preg_replace('~<input[^>]*saveNback[^>]*>~', '', $strContent);
+				$strContent = preg_replace('~<input[^>]*saveNback[^>]*>~', '<input type="hidden" name="feeHideOnClose" value="1">', $strContent);
+			}
 		}
 		
 		return $strContent;

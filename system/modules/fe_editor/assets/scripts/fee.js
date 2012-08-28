@@ -26,7 +26,7 @@
 
 	feeSettings.setState = function(checked, flash)
 	{
-		this.setStyle('background-image', 'url(system/modules/fe_editor/html/images/application'+(checked==1?'_edit.png':'.png')+')');
+		this.setStyle('background-image', 'url(system/modules/fe_editor/assets/images/application'+(checked==1?'_edit.png':'.png')+')');
 		this.store('checked', checked);
 
 		Cookie.write('fee_checked', checked);
@@ -107,7 +107,8 @@
 			loaderAtItem: true,
 			clickToCloseOverlay: false,
 			events: {
-				onOpen: function() {
+				onOpen: function()
+				{
 					bodyTop = $(document.body).getScroll().y;
 					bodyPosition = $(document.body).getStyle('position');
 					$(document.body).setStyle('position', 'fixed');
@@ -120,7 +121,8 @@
 					}
 					catch (err)	{}
 				},
-				onChange: function() {
+				onChange: function()
+				{
 					reloadOnClose = true;
 					
 					try
@@ -134,7 +136,8 @@
 					}
 					catch (err)	{}
 				},
-				onClose: function(e) {
+				onClose: function(e)
+				{
 					$(document.body).setStyle('position', bodyPosition);
 					$(document.body).scrollTo(0, bodyTop);
 
