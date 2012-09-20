@@ -35,6 +35,8 @@ class FrontendEditorHook extends Controller
 	{
 		$this->import('EditorUser');
 
+		/* BE_USER_LOGGED_IN ausprobieren!!! */
+
 		if ($this->EditorUser->authenticate() && $this->EditorUser->frontendEditor == 1)
 		{
 			$this->isActive = true;
@@ -66,6 +68,15 @@ class FrontendEditorHook extends Controller
 		parent::__construct();
 	}
 
+	public function outputFrontendTemplateHook($strContent, $strTemplate)
+	{
+		if (substr($strTemplate, 0, 3) == 'fe_')
+		{
+			$strContent = str_ireplace('</head>', '<script type="text/javascript">var request_token="'.(defined('REQUEST_TOKEN')?REQUEST_TOKEN:'').'";</script></head>', $strContent);
+		}
+
+		return $strContent;
+	}
 
 	public function generatePageHook(Database_Result $objPage, Database_Result $objLayout, PageRegular $objPageRegular)
 	{

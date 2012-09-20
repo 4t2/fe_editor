@@ -24,6 +24,27 @@
 	margin-top: 4px;
 }
 
+#fee_preview
+{
+	position: fixed;
+	top: 0;
+	right:  0;
+	height: 26px;
+	width:  36px;
+	padding: 0;
+	z-index: 9999;
+	border-left: 2px solid black;
+	border-bottom: 2px solid black;
+	border-bottom-left-radius: 5px;
+	font-size: 12px;
+	line-height: 0;
+	background: url('../images/lightbulb_off.png') no-repeat 10px 5px #fff;
+	-moz-box-shadow: 1px 1px 2px #858585;
+	-webkit-box-shadow: 1px 1px 2px #858585;
+	box-shadow: 1px 1px 2px #858585;
+	cursor: pointer;
+}
+
 .fee_editable:hover,
 .fee_flash,
 .mobile .fee_editable

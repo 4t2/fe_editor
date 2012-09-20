@@ -15,8 +15,8 @@
  *
  */
 
- window.addEvent('domready', function() {
-
+ window.addEvent('domready', function()
+ {
 	feeSettings = new Element('div',
 	{
 		'id' : 'fee_settings'
@@ -58,6 +58,31 @@
 	{
 		this.setState((this.retrieve('checked')==1?0:1), true);
 	});
+
+
+	feePreview = new Element('div',
+	{
+		'id' : 'fee_preview'
+	});
+	
+	feePreview.setStyle('background-image', 'url(system/modules/fe_editor/assets/images/lightbulb'+(Cookie.read('FE_PREVIEW')==1?'.png':'_off.png')+')');
+
+	feePreview.inject($(document.body), 'top');
+
+	feePreview.addEvent('click', function(e)
+	{
+		if (Cookie.read('FE_PREVIEW') == 1)
+		{
+			Cookie.write('FE_PREVIEW', '');
+		}
+		else
+		{
+			Cookie.write('FE_PREVIEW', '1');
+		}
+
+		document.location.reload();
+	});
+
 
 	reloadOnClose = false;
 	bodyPosition = 'relative';
