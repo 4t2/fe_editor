@@ -2,7 +2,7 @@
  * @package		fe_editor
  *
  * @author 		Mario Müller
- * @since 		2013-01-15
+ * @since 		2013-01-16
  * @version 	1.2.0
  *
  * This package requires
@@ -104,7 +104,7 @@
 					
 					$('fee_content_add_item').setStyle('display', 'inline-block');
 					$('fee_news_edit_item').setStyle('display', 'none');
-					
+
 					$('fee_statusbar').set('text', data.contentTitle);
 				}
 				else if (data.news != undefined)

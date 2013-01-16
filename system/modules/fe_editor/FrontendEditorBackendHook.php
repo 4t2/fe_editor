@@ -48,6 +48,11 @@ class FrontendEditorBackendHook extends \Controller
 				$strContent = preg_replace('~<input[^>]*saveNcreate[^>]*>~', '', $strContent);
 				#$strContent = preg_replace('~<input[^>]*saveNback[^>]*>~', '', $strContent);
 				$strContent = preg_replace('~<input[^>]*saveNback[^>]*>~', '<input type="hidden" name="feeHideOnClose" value="1">', $strContent);
+
+				// see https://github.com/4t2/fe_editor/issues/6
+				$strContent = preg_replace('~<ul class="easytheme_.*</ul>~isU', '', $strContent);
+				$strContent = preg_replace('~<ul id="easy_themes".*</ul>~isU', '', $strContent);
+				$strContent = str_replace('<script src="system/modules/easy_themes/html/easy_themes.js"></script>', '', $strContent);
 			}
 		}
 		
