@@ -33,11 +33,11 @@
  * Class EditorUser
  *
  * Provide methods to manage back end users.
- * @copyright  Mario Müller 2012
+ * @copyright  Mario Müller 2013
  * @author     Mario Müller <http://www.lingolia.com>
  * @package    Model
  */
-class EditorUser extends User
+class EditorUser extends \User
 {
 
 	/**

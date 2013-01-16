@@ -21,8 +21,8 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Lingo4you 2012
- * @author     Mario Müller <http://www.lingo4u.de/>
+ * @copyright  Lingo4you 2013
+ * @author     Mario Müller <http://www.lingolia.com/>
  * @package    FrontendEditor
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
@@ -30,11 +30,13 @@
 /**
  * Hooks
  */
-#if (isset($_COOKIE['BE_USER_AUTH']) && (TL_MODE == 'FE' || defined('EX_TL_MODE_FE')))
 if (isset($_COOKIE['BE_USER_AUTH']) && (TL_MODE == 'FE' || !empty($_GET['export'])))
 {
-	$GLOBALS['TL_HOOKS']['parseArticles'][] = array('FrontendEditorHook', 'parseArticlesHook');
-	#$GLOBALS['TL_HOOKS']['generatePage'][] = array('FrontendEditorHook', 'generatePageHook');
+	if (version_compare(VERSION, '3', '<'))
+	{
+		$GLOBALS['TL_HOOKS']['parseArticles'][] = array('FrontendEditorHook', 'parseArticlesHook');
+	}
+
 	$GLOBALS['TL_HOOKS']['getContentElement'][] = array('FrontendEditorHook', 'getContentElementHook');
 	#$GLOBALS['TL_HOOKS']['outputFrontendTemplate'][] = array('FrontendEditorHook', 'outputFrontendTemplateHook');
 }

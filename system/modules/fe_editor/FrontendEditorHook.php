@@ -21,13 +21,13 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Lingo4you 2012
- * @author     Mario Müller <http://www.lingo4u.de/>
+ * @copyright  Lingo4you 2013
+ * @author     Mario Müller <http://www.lingolia.com/>
  * @package    FrontendEditor
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-class FrontendEditorHook extends Controller
+class FrontendEditorHook extends \Controller
 {
 	protected $isActive = false;
 
@@ -56,12 +56,12 @@ class FrontendEditorHook extends Controller
 			if (version_compare(VERSION, '3', '>='))
 			{
 				$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/assets/cerabox/cerabox.min.js|static';
-				$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/assets/scripts/fee.js|static';
+				$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/assets/scripts/fee_moo.js|static';
 			}
 			else
 			{
 				$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/assets/cerabox/cerabox.min.js';
-				$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/assets/scripts/fee.js';
+				$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/assets/scripts/fee_moo.js';
 			}
 		}
 
@@ -97,13 +97,25 @@ class FrontendEditorHook extends Controller
 
 	public function getContentElementHook($objElement, $strBuffer)
 	{
-		if ($this->isActive && preg_match('~(.*?)(?!<[a-z]+ class="no-no)(<[a-z]+[^>]*>)(.*)~ism', $strBuffer, $match))
+		if (version_compare(VERSION, '3', '<'))
+		{
+			$parentTable = 'tl_article';
+		}
+		else
+		{
+			$parentTable = $objElement->ptable;
+		}
+
+		if ($this->isActive && in_array($parentTable, array('tl_article', 'tl_news')) && preg_match('~(.*?)(?!<[a-z]+ class="no-no)(<[a-z]+[^>]*>)(.*)~ism', $strBuffer, $match))
 		{
 			global $objPage;
+			
+			$feeData = array('table' => substr($parentTable, 3));
 			
 			if (defined('REQUEST_TOKEN'))
 			{
 				$rt = '&amp;rt='.REQUEST_TOKEN;
+				$feeData['rt'] = REQUEST_TOKEN;
 			}
 			else
 			{
@@ -123,35 +135,32 @@ class FrontendEditorHook extends Controller
 			$newsArchive = -1;
 
 			$strToolbar = '<div class="no-sc fee_toolbar"><ul>';
-
-			#if (preg_match('~<!-- FEE (.*) FEE -->~iU', $match[3], $subMatch))
+			
 			if (preg_match('~<!-- FEE-NEWS (\d+) (\d+) NEWS-FEE -->~iU', $match[3], $subMatch))
 			{
 				$match[3] = str_replace($subMatch[0], '', $match[3]);
-				#$strToolbar .= '<li class="fee_content_edit"><'.$subMatch[1].'></li>';
-				$strToolbar .= '<li class="fee_content_edit"><a class="cerabox-content" href="contao/main.php?do=news&amp;table=tl_news&amp;act=edit&amp;id='.$subMatch[1].$rt.'&amp;fee=1" title="'.sprintf($GLOBALS['TL_LANG']['FEE']['edit_news'], $subMatch[1]).'"><img src="system/modules/fe_editor/assets/images/pencil.png" width="16" height="16" alt="c"></a></li>';
-				$newsArchive = $subMatch[2];
+
+				$feeData['table'] = 'news';
+				$feeData['news'] = $subMatch[1];
+				$feeData['newsArchive'] = $subMatch[2];
+				$feeData['newsTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_news'], $subMatch[1]);
+				$feeData['newsArchiveTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_news_archive'], $subMatch[2]);
 			}
 			else
-			{
-				$strToolbar .= '<li class="fee_content_edit"><a class="cerabox-content" href="contao/main.php?do=article&amp;table=tl_content&amp;act=edit&amp;id='.$objElement->id.$rt.'&amp;fee=1" title="'.sprintf($GLOBALS['TL_LANG']['FEE']['edit_content'], $objElement->id).'"><img src="system/modules/fe_editor/assets/images/pencil.png" width="16" height="16" alt="c"></a></li>';
+			{				
+				$feeData['content'] = $objElement->id;
+				$feeData['contentTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_content'], $objElement->id);
+				$feeData['contentAddTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_content_add'], $objElement->id);
 			}
 
-			$strToolbar .= '<li class="fee_article_edit"><a class="cerabox" href="contao/main.php?do=article&amp;table=tl_content&amp;id='.$objElement->pid.$rt.'" title="'.sprintf($GLOBALS['TL_LANG']['FEE']['edit_article'], $objElement->pid).'"><img src="system/modules/fe_editor/assets/images/page_white_edit.png" width="16" height="16" alt="a"></a></li>';
-			$strToolbar .= '<li class="fee_page_edit"><a class="cerabox" href="contao/main.php?do=page&amp;act=edit&amp;id='.$objPage->id.$rt.'" title="'.sprintf($GLOBALS['TL_LANG']['FEE']['edit_page'], $objPage->id).'"><img src="system/modules/fe_editor/assets/images/page_edit.png" width="16" height="16" alt="p"></a></li>';
-			
-			if ($newsArchive > -1)
-			{
-				$strToolbar .= '<li class="fee_news_edit"><a class="cerabox" href="contao/main.php?do=news&amp;table=tl_news&amp;id='.$newsArchive.$rt.'" title="'.sprintf($GLOBALS['TL_LANG']['FEE']['edit_news_archive'], $newsArchive).'"><img src="system/modules/fe_editor/assets/images/script_edit.png" width="16" height="16" alt="c"></a></li>';
-			}
-			else
-			{
-				$strToolbar .= '<li class="fee_content_add"><a class="cerabox" href="contao/main.php?do=article&amp;table=tl_content&amp;act=create&amp;mode=1&amp;pid='.$objElement->id.'&amp;id='.$objElement->pid.$rt.'" title="'.sprintf($GLOBALS['TL_LANG']['FEE']['edit_content_add'], $objElement->id).'"><img src="system/modules/fe_editor/assets/images/pencil_add.png" width="16" height="16" alt="+"></a></li>';
-			}
-			
-			$strToolbar .= '</ul><p>'.sprintf($GLOBALS['TL_LANG']['FEE']['edit_content'], $objElement->id).'</p></div>';
+			$feeData['article'] = $objElement->pid;
+			$feeData['articleTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_article'], $objElement->pid);			
+			$feeData['page'] = $objPage->id;
+			$feeData['pageTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_page'], $objPage->id);
 
-			$strBuffer = $match[1].$match[2].$strToolbar.$match[3];
+			$match[2] = str_replace('>', " data-fee='".json_encode($feeData)."'>", $match[2]);
+			
+			$strBuffer = $match[1].$match[2].$match[3];
 		}
 
 		return $strBuffer;

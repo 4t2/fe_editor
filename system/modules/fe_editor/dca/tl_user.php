@@ -21,8 +21,8 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Lingo4you 2012
- * @author     Mario Müller <http://www.lingo4u.de/>
+ * @copyright  Lingo4you 2013
+ * @author     Mario Müller <http://www.lingolia.com/>
  * @package    FrontendEditor
  * @license    LGPL
  * @filesource
@@ -47,16 +47,5 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['frontendEditor'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['frontendEditor'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'eval'                    => array('tl_class'=>'w50', 'submitOnChange'=>false)
+	'eval'                    => array('tl_class'=>'w50')
 );
-/*
-$GLOBALS['TL_DCA']['tl_user']['fields']['frontendEditorTables'] = array
-(
-	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['frontendEditorTables']['title'],
-	'exclude'                 => true,
-	'inputType'               => 'checkbox',
-	'options'                 => array('page', 'article', 'content', 'news', 'new_content'),
-	'eval'                    => array('multiple'=>true),
-	'reference'               => &$GLOBALS['TL_LANG']['tl_user']['frontendEditorTables']['reference']
-);
-*/

@@ -2,8 +2,8 @@
  * @package		fe_editor
  *
  * @author 		Mario Müller
- * @since 		2012-05-06
- * @version 	1.1.2
+ * @since 		2013-01-15
+ * @version 	1.2.0
  *
  * This package requires
  * - MooTools 1.4 >
@@ -11,18 +11,71 @@
  *
  * @license http://opensource.org/licenses/lgpl-3.0.html
  *
- * Copyright (c) 2012 Lingo4you, <http://www.lingo4u.de/>
+ * Copyright (c) 2013 Lingo4you, <http://www.lingolia.com/>
  *
  */
 
  window.addEvent('domready', function()
  {
+ 
+ (function($) {
+ 
+ 	feeToolbar = new Element('div',
+ 	{
+ 		'id' : 'fee_toolbar',
+ 		'class' : 'no-sc fee_toolbar',
+ 		'html' : '<p id="fee_statusbar"></p>'
+ 	});
+ 
+ 	feeToolbarList = new Element('ul');
+ 	 	
+ 	//feeToolbarList.inject(feeToolbar, 'top');
+ 	
+ 	feeToolbarList.adopt(
+	 	new Element('li',
+	 	{
+	 		'id' : 'fee_content_edit_item',
+	 		'html' : '<a id="fee_content_edit" class="cerabox-content" href=""><img src="system/modules/fe_editor/assets/images/pencil.png" width="16" height="16" alt="c"></a>'
+	 	}),
+	 	new Element('li',
+	 	{
+	 		'id' : 'fee_article_edit_item',
+	 		'html' : '<a id="fee_article_edit" class="cerabox" href=""><img src="system/modules/fe_editor/assets/images/page_white_edit.png" width="16" height="16" alt="c"></a>'
+	 	}),
+	 	new Element('li',
+	 	{
+	 		'id' : 'fee_page_edit_item',
+	 		'html' : '<a id="fee_page_edit" class="cerabox" href=""><img src="system/modules/fe_editor/assets/images/page_edit.png" width="16" height="16" alt="c"></a>'
+	 	}),
+	 	new Element('li',
+	 	{
+	 		'id' : 'fee_news_edit_item',
+	 		'html' : '<a id="fee_news_edit" class="cerabox" href=""><img src="system/modules/fe_editor/assets/images/script_edit.png" width="16" height="16" alt="c"></a>',
+	 		'styles' : {
+	 			'display' : 'none'
+	 		}
+	 	}),
+	 	
+	 	new Element('li',
+	 	{
+	 		'id' : 'fee_content_add_item',
+	 		'html' : '<a id="fee_content_add" class="cerabox-content" href=""><img src="system/modules/fe_editor/assets/images/pencil_add.png" width="16" height="16" alt="c"></a>',
+	 		'styles' : {
+	 			'display' : 'none'
+	 		}
+	 	})
+	 );
+
+ 	feeToolbar.grab(feeToolbarList, 'top');
+
 	feeSettings = new Element('div',
 	{
 		'id' : 'fee_settings'
 	});
 
-	feeSettings.inject($(document.body), 'top');
+	$(document.body).grab(feeSettings, 'bottom');
+	
+	$(document.body).grab(feeToolbar, 'bottom');
 
 	feeSettings.setState = function(checked, flash)
 	{
@@ -31,9 +84,54 @@
 
 		Cookie.write('fee_checked', checked);
 
-		if (checked==1)
+		if (checked == 1)
 		{
 			$$('.fe_editor').addClass('fee_editable');
+			
+			$$('.fe_editor').addEvent('mouseenter', function(e)
+			{
+				data = JSON.parse(this.get('data-fee'));
+
+				$(this).grab(feeToolbar, 'top');
+
+				if (data.content != undefined)
+				{
+					$('fee_content_edit').set('href', 'contao/main.php?do='+data.table+'&table=tl_content&act=edit&fee=1&rt='+data.rt+'&id='+data.content);
+					$('fee_content_edit').set('data-statusbar', data.contentTitle);
+					
+					$('fee_content_add').set('href', 'contao/main.php?do='+data.table+'&table=tl_content&act=create&fee=1&mode=1&pid='+data.content+'&id='+data.article+'&rt='+data.rt);
+					$('fee_content_add').set('data-statusbar', data.contentAddTitle);
+					
+					$('fee_content_add_item').setStyle('display', 'inline-block');
+					$('fee_news_edit_item').setStyle('display', 'none');
+					
+					$('fee_statusbar').set('text', data.contentTitle);
+				}
+				else if (data.news != undefined)
+				{
+					$('fee_content_edit').set('href', 'contao/main.php?do=news&table=tl_news&act=edit&fee=1&rt='+data.rt+'&id='+data.news);
+					$('fee_content_edit').set('data-statusbar', data.newsTitle);
+					
+					$('fee_news_edit').set('href', 'contao/main.php?do=news&table=tl_news&id='+data.newsArchive+'&rt='+data.rt);
+					$('fee_news_edit').set('data-statusbar', data.newsArchiveTitle);
+
+					$('fee_content_add_item').setStyle('display', 'none');
+					$('fee_news_edit_item').setStyle('display', 'inline-block');
+					
+					$('fee_statusbar').set('text', data.newsTitle);
+				}
+
+				$('fee_article_edit').set('href', 'contao/main.php?do=article&table=tl_content&rt='+data.rt+'&id='+data.article);
+				$('fee_article_edit').set('data-statusbar', data.articleTitle);
+				
+				$('fee_page_edit').set('href', 'contao/main.php?do=page&act=edit&rt='+data.rt+'&id='+data.page);
+				$('fee_page_edit').set('data-statusbar', data.pageTitle);
+				
+				if (this.getCoordinates().top < 35)
+				{
+					feeToolbar.setStyle('margin-top', '0');
+				}
+			});
 
 			if (flash)
 			{
@@ -64,10 +162,10 @@
 	{
 		'id' : 'fee_preview'
 	});
-	
+
 	feePreview.setStyle('background-image', 'url(system/modules/fe_editor/assets/images/lightbulb'+(Cookie.read('FE_PREVIEW')==1?'.png':'_off.png')+')');
 
-	feePreview.inject($(document.body), 'top');
+	$(document.body).grab(feePreview, 'bottom');
 
 	feePreview.addEvent('click', function(e)
 	{
@@ -178,7 +276,7 @@
 	{
 		$$('a.cerabox').set('target', '_blank');
 	}
-
+/*
 	$$('.fee_toolbar').getParent()
 		.addEvent('mouseenter', function(e) {
 			if (this.getCoordinates().top < 35)
@@ -186,17 +284,20 @@
 				this.getElement('.fee_toolbar').setStyle('margin-top', '0');
 			}
 		});
+*/
 
-	$$('.fee_toolbar a')
+	$$('#fee_toolbar a')
 		.addEvent('mouseenter', function(e) {
-			this.getParent('div').getChildren('p').set('text', this.get('title'));
-			this.set('title', '');
+			//this.getParent('div').getChildren('p').set('text', this.get('title'));
+			//this.set('title', '');
+			$('fee_statusbar').set('text', this.get('data-statusbar'));
 		})
 		.addEvent('mouseleave', function(e) {
-			this.set('title', this.getParent('div').getChildren('p')[0].get('text'));
+			//this.set('title', this.getParent('div').getChildren('p')[0].get('text'));
+			//$('fee_statusbar').set('text', 'FrontendEditor');
 		});
-	
-	$$('.fee_content_edit a')
+
+	$('fee_content_edit')
 		.addEvent('mouseenter', function(e) {
 			this.getParent('.fe_editor')
 				.setStyle('outline-color', 'red');
@@ -205,7 +306,7 @@
 			this.getParent('.fe_editor').setStyle('outline-color', 'black');
 		});
 	
-	$$('.fee_content_add a')
+	$('fee_content_add')
 		.addEvent('mouseenter', function(e) {
 			this.getParent('.fe_editor')
 				.setStyle('outline-color', 'green');
@@ -214,7 +315,7 @@
 			this.getParent('.fe_editor').setStyle('outline-color', 'black');
 		});
 
-	$$('.fee_article_edit a')
+	$('fee_article_edit')
 		.addEvent('mouseenter', function(e) {
 			this.getParent('.mod_article')
 				.setStyles({
@@ -226,7 +327,7 @@
 			this.getParent('.mod_article').setStyle('outline', 'none');
 		});
 
-	$$('.fee_page_edit a')
+	$('fee_page_edit')
 		.addEvent('mouseenter', function(e) {
 			$(document.body)
 				.setStyles({
@@ -237,4 +338,7 @@
 		.addEvent('mouseleave', function(e) {
 			$(document.body).setStyle('outline', 'none');
 		});
+
+})(document.id);
+
 });
