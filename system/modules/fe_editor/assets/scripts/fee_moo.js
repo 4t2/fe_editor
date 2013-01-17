@@ -96,10 +96,10 @@
 
 				if (data.content != undefined)
 				{
-					$('fee_content_edit').set('href', 'contao/main.php?do='+data.table+'&table=tl_content&act=edit&fee=1&rt='+data.rt+'&id='+data.content);
+					$('fee_content_edit').set('href', 'contao/main.php?do='+data.do+'&table=tl_content&act=edit&fee=1&rt='+data.rt+'&id='+data.content);
 					$('fee_content_edit').set('data-statusbar', data.contentTitle);
 					
-					$('fee_content_add').set('href', 'contao/main.php?do='+data.table+'&table=tl_content&act=create&fee=1&mode=1&pid='+data.content+'&id='+data.article+'&rt='+data.rt);
+					$('fee_content_add').set('href', 'contao/main.php?do='+data.do+'&table=tl_content&act=create&fee=1&mode=1&pid='+data.content+'&id='+data.article+'&rt='+data.rt);
 					$('fee_content_add').set('data-statusbar', data.contentAddTitle);
 					
 					$('fee_content_add_item').setStyle('display', 'inline-block');

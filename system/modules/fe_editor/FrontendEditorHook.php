@@ -30,6 +30,11 @@
 class FrontendEditorHook extends \Controller
 {
 	protected $isActive = false;
+	protected $arrParentTables = array(
+		'tl_article' => 'article',
+		'tl_news' =>	'news',
+		'tl_boxes4ward_article' => 'boxes4ward'
+	);
 
 	public function __construct()
 	{
@@ -97,24 +102,25 @@ class FrontendEditorHook extends \Controller
 
 	public function getContentElementHook($objElement, $strBuffer)
 	{
-		if (version_compare(VERSION, '3', '<'))
+		if ($objElement->do != '')
 		{
-			$parentTable = 'tl_article';
+			$feeData = array('do' => $objElement->do);
+		}
+		elseif ($objElement->ptable != '' && array_key_exists($objElement->ptable, $this->arrParentTables))
+		{
+			$feeData = array('do' => $this->arrParentTables[$objElement->ptable]);
 		}
 		else
 		{
-			$parentTable = $objElement->ptable;
+			$feeData = FALSE;
 		}
 
-		if ($this->isActive && in_array($parentTable, array('tl_article', 'tl_news')) && preg_match('~(.*?)(?!<[a-z]+ class="no-no)(<[a-z]+[^>]*>)(.*)~ism', $strBuffer, $match))
+		if ($this->isActive && $feeData !== FALSE && preg_match('~(.*?)(?!<[a-z]+ class="no-no)(<[a-z]+[^>]*>)(.*)~ism', $strBuffer, $match))
 		{
 			global $objPage;
-			
-			$feeData = array('table' => substr($parentTable, 3));
-			
+
 			if (defined('REQUEST_TOKEN'))
 			{
-				$rt = '&amp;rt='.REQUEST_TOKEN;
 				$feeData['rt'] = REQUEST_TOKEN;
 			}
 			else
@@ -136,7 +142,7 @@ class FrontendEditorHook extends \Controller
 
 			$strToolbar = '<div class="no-sc fee_toolbar"><ul>';
 			
-			if (preg_match('~<!-- FEE-NEWS (\d+) (\d+) NEWS-FEE -->~iU', $match[3], $subMatch))
+			if (version_compare(VERSION, '3', '<') && preg_match('~<!-- FEE-NEWS (\d+) (\d+) NEWS-FEE -->~iU', $match[3], $subMatch))
 			{
 				$match[3] = str_replace($subMatch[0], '', $match[3]);
 
