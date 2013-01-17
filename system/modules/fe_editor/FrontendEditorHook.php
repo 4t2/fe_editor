@@ -31,8 +31,6 @@ class FrontendEditorHook extends \Controller
 {
 	protected $isActive = false;
 	protected $arrParentTables = array(
-		'tl_article' => 'article',
-		'tl_news' =>	'news',
 		'tl_boxes4ward_article' => 'boxes4ward'
 	);
 
@@ -100,19 +98,26 @@ class FrontendEditorHook extends \Controller
 		$objTemplate->text = '<!-- FEE-NEWS '.$objTemplate->id.' '.$objTemplate->pid.' NEWS-FEE -->'.$objTemplate->text;
 	}
 
-	public function getContentElementHook($objElement, $strBuffer)
+	public function getContentElementHook($objRow, $strBuffer)
 	{
-		if ($objElement->do != '')
+		if ($objRow->do != '') // from GlobalContentelements
 		{
-			$feeData = array('do' => $objElement->do);
+			$feeData = array('do' => $objRow->do);
 		}
-		elseif ($objElement->ptable != '' && array_key_exists($objElement->ptable, $this->arrParentTables))
+		elseif ($objRow->ptable != '') // since Contao 3
 		{
-			$feeData = array('do' => $this->arrParentTables[$objElement->ptable]);
+			if (array_key_exists($objRow->ptable, $this->arrParentTables))
+			{
+				$feeData = array('do' => $this->arrParentTables[$objRow->ptable]);
+			}
+			else
+			{
+				$feeData = array('do' => substr($objRow->ptable, 3));
+			}
 		}
-		else
+		else // default
 		{
-			$feeData = FALSE;
+			$feeData = array('do' => 'article');
 		}
 
 		if ($this->isActive && $feeData !== FALSE && preg_match('~(.*?)(?!<[a-z]+ class="no-no)(<[a-z]+[^>]*>)(.*)~ism', $strBuffer, $match))
@@ -146,21 +151,21 @@ class FrontendEditorHook extends \Controller
 			{
 				$match[3] = str_replace($subMatch[0], '', $match[3]);
 
-				$feeData['table'] = 'news';
+				$feeData['do'] = 'news';
 				$feeData['news'] = $subMatch[1];
 				$feeData['newsArchive'] = $subMatch[2];
 				$feeData['newsTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_news'], $subMatch[1]);
 				$feeData['newsArchiveTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_news_archive'], $subMatch[2]);
 			}
 			else
-			{				
-				$feeData['content'] = $objElement->id;
-				$feeData['contentTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_content'], $objElement->id);
-				$feeData['contentAddTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_content_add'], $objElement->id);
+			{
+				$feeData['content'] = $objRow->id;
+				$feeData['contentTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_content'], $objRow->id);
+				$feeData['contentAddTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_content_add'], $objRow->id);
 			}
 
-			$feeData['article'] = $objElement->pid;
-			$feeData['articleTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_article'], $objElement->pid);			
+			$feeData['article'] = $objRow->pid;
+			$feeData['articleTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_article'], $objRow->pid);			
 			$feeData['page'] = $objPage->id;
 			$feeData['pageTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_page'], $objPage->id);
 

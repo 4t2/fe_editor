@@ -102,6 +102,9 @@
 	margin: 0!important;
 	padding: 0!important;
 	border: none !important;
+	-moz-box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
 }
 .fee_toolbar p {
 	height: 18px !important; /* hinzugefügt wg. besserer Lesbarkeit*/
