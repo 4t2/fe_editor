@@ -23,6 +23,7 @@
  * PHP version 5
  * @copyright  Lingo4you 2013
  * @author     Mario Müller <http://www.lingolia.com/>
+ * @version    2.0.0
  * @package    FrontendEditor
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
@@ -33,15 +34,11 @@ class FrontendEditorBackendHook extends \Controller
 	{
 		if ($strTemplate == 'be_main')
 		{
-			if ($this->Input->post('feeHideOnClose') == 1)
-			{
-				$strContent = '<html><head><title>Close</title></head><body><p>Close</p></body></html>';
-			}
-			elseif ($this->Input->get('fee') == 1 || $this->Input->post('fee') == 1)
+			if ($this->Input->get('fee') == 1 || $this->Input->post('fee') == 1)
 			{
 				$strContent = preg_replace('~<div id="header".*<div id="container"~is', '<div id="container" style="width:730px"', $strContent);
 				$strContent = preg_replace('~<div id="left".*<div id="main"~is', '<div id="main" style="margin-left:0; margin-top:5px;"', $strContent);
-				$strContent = preg_replace('~<div id="footer".*<script~is', '<script', $strContent);
+				$strContent = preg_replace('~(<div id="footer")~is', '$1 style="display:none"', $strContent);
 	
 				$strContent = preg_replace('~<div id="tl_buttons">.*</div>~isU', '$1', $strContent);
 				
@@ -54,8 +51,53 @@ class FrontendEditorBackendHook extends \Controller
 				$strContent = preg_replace('~<ul id="easy_themes".*</ul>~isU', '', $strContent);
 				$strContent = str_replace('<script src="system/modules/easy_themes/html/easy_themes.js"></script>', '', $strContent);
 			}
+
+			$strContent = str_replace('</body>', '<script>if (parent.onLoadContaoBackend != undefined) { parent.onLoadContaoBackend("'.$_SERVER['REQUEST_URI'].'", '.($GLOBALS['TL_CONFIG']['frontendEditorReload'] ? 'true' : 'false').'); }</script></body>', $strContent);
 		}
-		
+
 		return $strContent;
 	}
+	
+	public function outputBackendTemplate($strBuffer, $strTemplate)
+	{
+		$this->import('BackendUser', 'User');
+		
+		if ($this->User->frontendEditor)
+		{
+			$arrButtons = array('EditContent', 'EditArticle', 'EditPage', 'EditNews', 'AddContent');
+		
+			$this->Session->set('frontendEditor', $this->User->frontendEditor);
+
+			$arrGroups = $this->User->groups;
+
+			if (!is_null($arrGroups) && is_array($arrGroups))
+			{
+				$arrGroups[] = '+';
+			}
+			else
+			{
+				$arrGroups = array('+');
+			}
+
+			if (!$this->User->isAdmin)
+			{
+				for ($i = count($arrButtons)-1; $i >= 0; $i--)
+				{
+					if (!in_array($GLOBALS['TL_CONFIG']['frontendEditor'.$arrButtons[$i]], $arrGroups))
+					{
+						unset($arrButtons[$i]);
+					}
+				}
+			}
+
+			$this->Session->set('frontendEditorButtons', $arrButtons);
+		}
+		else
+		{
+			$this->Session->set('frontendEditor', '');
+		}
+
+		return $strBuffer;
+	}
 }
+

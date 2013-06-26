@@ -23,6 +23,7 @@
  * PHP version 5
  * @copyright  Lingo4you 2013
  * @author     Mario Müller <http://www.lingolia.com/>
+ * @version    2.0.0
  * @package    FrontendEditor
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
@@ -34,38 +35,40 @@ class FrontendEditorHook extends \Controller
 		'tl_boxes4ward_article' => 'boxes4ward'
 	);
 
+
 	public function __construct()
 	{
-		$this->import('EditorUser');
+		global $objPage;
 
-		/* BE_USER_LOGGED_IN ausprobieren!!! */
+		$this->isActive = true;
 
-		if ($this->EditorUser->authenticate() && $this->EditorUser->frontendEditor == 1)
+		if (!is_array($GLOBALS['TL_CSS']))
 		{
-			$this->isActive = true;
+			$GLOBALS['TL_CSS'] = array();
+		}
 
-			if (!is_array($GLOBALS['TL_CSS']))
-			{
-				$GLOBALS['TL_CSS'] = array();
-			}
-			$GLOBALS['TL_CSS'][] = 'system/modules/fe_editor/assets/styles/fee.css';
+		if (!is_array($GLOBALS['TL_JAVASCRIPT']))
+		{
+			$GLOBALS['TL_JAVASCRIPT'] = array();
+		}
+
+		$GLOBALS['TL_CSS'][] = 'system/modules/fe_editor/assets/styles/fee.css';
+		
+		if ($GLOBALS['TL_CONFIG']['frontendEditorFramework'] == 'mootools' ||
+			$GLOBALS['TL_CONFIG']['frontendEditorFramework'] == 'auto' && (version_compare(VERSION, '3', '<') || $objPage->hasMooTools))
+		{
 			$GLOBALS['TL_CSS'][] = 'system/modules/fe_editor/assets/cerabox/style/cerabox.css';
 
-			if (!is_array($GLOBALS['TL_JAVASCRIPT']))
-			{
-				$GLOBALS['TL_JAVASCRIPT'] = array();
-			}
+			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/assets/cerabox/cerabox.min.js';
+			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/assets/scripts/moo_fee.js';
+		}
+		elseif ($GLOBALS['TL_CONFIG']['frontendEditorFramework'] == 'jquery' || $objPage->hasJQuery)
+		{
+			$GLOBALS['TL_CSS'][] = TL_ASSETS_URL.'assets/jquery/colorbox/'. COLORBOX .'/css/colorbox.min.css||static';
 
-			if (version_compare(VERSION, '3', '>='))
-			{
-				$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/assets/cerabox/cerabox.min.js|static';
-				$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/assets/scripts/fee_moo.js|static';
-			}
-			else
-			{
-				$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/assets/cerabox/cerabox.min.js';
-				$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/assets/scripts/fee_moo.js';
-			}
+			$GLOBALS['TL_JAVASCRIPT'][] = TL_ASSETS_URL.'assets/jquery/colorbox/'. COLORBOX .'/js/colorbox.min.js';
+			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/assets/jquery-cookie/jquery.cookie.js';
+			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/assets/scripts/jquery_fee.js';
 		}
 
 		parent::__construct();
@@ -80,7 +83,7 @@ class FrontendEditorHook extends \Controller
 
 		return $strContent;
 	}
-
+/*
 	public function generatePageHook(Database_Result $objPage, Database_Result $objLayout, PageRegular $objPageRegular)
 	{
 		if ($this->isActive)
@@ -92,7 +95,7 @@ class FrontendEditorHook extends \Controller
 			$objLayout->mootools = serialize($mootools);
 		}
 	}
-
+*/
 	public function parseArticlesHook($objTemplate, $arrArticles)
 	{
 		$objTemplate->text = '<!-- FEE-NEWS '.$objTemplate->id.' '.$objTemplate->pid.' NEWS-FEE -->'.$objTemplate->text;
@@ -144,10 +147,10 @@ class FrontendEditorHook extends \Controller
 			}
 
 			$newsArchive = -1;
-
-			$strToolbar = '<div class="no-sc fee_toolbar"><ul>';
 			
-			if (version_compare(VERSION, '3', '<') && preg_match('~<!-- FEE-NEWS (\d+) (\d+) NEWS-FEE -->~iU', $match[3], $subMatch))
+			$arrButtons = $_SESSION['BE_DATA']['frontendEditorButtons'];
+
+			if (version_compare(VERSION, '3', '<') && in_array('EditNews', $arrButtons) && preg_match('~<!-- FEE-NEWS (\d+) (\d+) NEWS-FEE -->~iU', $match[3], $subMatch))
 			{
 				$match[3] = str_replace($subMatch[0], '', $match[3]);
 
@@ -159,15 +162,29 @@ class FrontendEditorHook extends \Controller
 			}
 			else
 			{
-				$feeData['content'] = $objRow->id;
-				$feeData['contentTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_content'], $objRow->id);
-				$feeData['contentAddTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_content_add'], $objRow->id);
+				if (in_array('EditContent', $arrButtons))
+				{
+					$feeData['content'] = $objRow->id;
+					$feeData['contentTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_content'], $objRow->id);
+				}
+				
+				if (in_array('AddContent', $arrButtons))
+				{
+					$feeData['contentAddTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_content_add'], $objRow->id);
+				}
 			}
 
-			$feeData['article'] = $objRow->pid;
-			$feeData['articleTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_article'], $objRow->pid);			
-			$feeData['page'] = $objPage->id;
-			$feeData['pageTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_page'], $objPage->id);
+			if (in_array('EditArticle', $arrButtons))
+			{
+				$feeData['article'] = $objRow->pid;
+				$feeData['articleTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_article'], $objRow->pid);
+			}
+
+			if (in_array('EditPage', $arrButtons))
+			{
+				$feeData['page'] = $objPage->id;
+				$feeData['pageTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_page'], $objPage->id);
+			}
 
 			$match[2] = str_replace('>', " data-fee='".json_encode($feeData)."'>", $match[2]);
 			

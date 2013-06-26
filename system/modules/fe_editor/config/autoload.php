@@ -17,6 +17,5 @@
 ClassLoader::addClasses(array
 (
 	'FrontendEditorHook'        => 'system/modules/fe_editor/FrontendEditorHook.php',
-	'FrontendEditorBackendHook' => 'system/modules/fe_editor/FrontendEditorBackendHook.php',
-	'EditorUser'                => 'system/modules/fe_editor/EditorUser.php',
+	'FrontendEditorBackendHook' => 'system/modules/fe_editor/FrontendEditorBackendHook.php'
 ));

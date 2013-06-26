@@ -24,19 +24,14 @@
  * @copyright  Lingo4you 2013
  * @author     Mario Müller <http://www.lingolia.com/>
  * @package    FrontendEditor
- * @license    LGPL
- * @filesource
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
 /**
  * Extend default palette
  */
-#$GLOBALS['TL_DCA']['tl_user']['palettes']['login'] = str_replace('{session_legend', '{frontendEditorLegend:hide},frontendEditor;{session_legend', $GLOBALS['TL_DCA']['tl_user']['palettes']['login']);
 $GLOBALS['TL_DCA']['tl_user']['palettes']['login'] = str_replace(';{session_legend', ',frontendEditor;{session_legend', $GLOBALS['TL_DCA']['tl_user']['palettes']['login']);
-
-#$GLOBALS['TL_DCA']['tl_user']['palettes']['__selector__'][] = 'frontendEditor';
-#$GLOBALS['TL_DCA']['tl_user']['subpalettes'] = array('frontendEditor' => 'frontendEditorTables');
 
 
 /**
@@ -47,5 +42,8 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['frontendEditor'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['frontendEditor'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'eval'                    => array('tl_class'=>'w50')
+	'eval'                    => array(
+		'tl_class' =>	'w50'
+	),
+	'sql'					=> 'char(1) NOT NULL default \'1\''
 );

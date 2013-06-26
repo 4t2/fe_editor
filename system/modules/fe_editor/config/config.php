@@ -27,10 +27,20 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
+
+$GLOBALS['TL_CONFIG']['frontendEditorFramework'] = 'auto';
+$GLOBALS['TL_CONFIG']['frontendEditorReload'] = '1';
+
+$GLOBALS['TL_CONFIG']['frontendEditorEditContent'] = '+';
+$GLOBALS['TL_CONFIG']['frontendEditorEditNews'] = '+';
+$GLOBALS['TL_CONFIG']['frontendEditorEditArticle'] = '+';
+$GLOBALS['TL_CONFIG']['frontendEditorEditPage'] = '+';
+$GLOBALS['TL_CONFIG']['frontendEditorAddContent'] = '+';
+
 /**
  * Hooks
  */
-if (isset($_COOKIE['BE_USER_AUTH']) && (TL_MODE == 'FE' || !empty($_GET['export'])))
+if (isset($_COOKIE['BE_USER_AUTH']) && !empty($_SESSION['BE_DATA']['frontendEditor']) && !empty($_SESSION['BE_DATA']['frontendEditorButtons']) && (TL_MODE == 'FE' || !empty($_GET['export'])))
 {
 	if (version_compare(VERSION, '3', '<'))
 	{
@@ -38,10 +48,10 @@ if (isset($_COOKIE['BE_USER_AUTH']) && (TL_MODE == 'FE' || !empty($_GET['export'
 	}
 
 	$GLOBALS['TL_HOOKS']['getContentElement'][] = array('FrontendEditorHook', 'getContentElementHook');
-	#$GLOBALS['TL_HOOKS']['outputFrontendTemplate'][] = array('FrontendEditorHook', 'outputFrontendTemplateHook');
 }
 
 if (TL_MODE == 'BE')
 {
 	$GLOBALS['TL_HOOKS']['parseBackendTemplate'][] = array('FrontendEditorBackendHook', 'parseBackendTemplateHook');
+	$GLOBALS['TL_HOOKS']['outputBackendTemplate'][] = array('FrontendEditorBackendHook', 'outputBackendTemplate');
 }

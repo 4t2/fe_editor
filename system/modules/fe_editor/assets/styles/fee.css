@@ -1,4 +1,3 @@
-
 #fee_settings
 {
 	position: fixed;
@@ -76,16 +75,18 @@
 	border-top-right-radius: 5px;
 	border-bottom: none;
 }
-.fee_toolbar li {
-	margin: 4px!important;
-	padding: 2px 2px 0!important;
+.fee_toolbar li
+{
+	margin: 4px !important;
+	padding: 2px 2px 0 !important;
 	display: inline-block;
-	list-style-type: none;
-	line-height: 0;
+	list-style-type: none !important;
+	line-height: 0 !important;
 }
-.fee_toolbar li.fee_content_edit {
+.fee_toolbar li.fee_content_edit
+{
 	padding-right: 8px !important;
-	border-right: 1px solid silver;
+	border-right: 1px solid silver !important;
 }
 .fee_toolbar li a {
 	padding: 0 !important;
@@ -98,7 +99,8 @@
 {
 	border-bottom: 1px solid silver;
 }
-.fee_toolbar li a img {
+.fee_toolbar li a img
+{
 	margin: 0!important;
 	padding: 0!important;
 	border: none !important;
@@ -106,7 +108,8 @@
 	-webkit-box-shadow: none !important;
 	box-shadow: none !important;
 }
-.fee_toolbar p {
+.fee_toolbar p
+{
 	height: 18px !important; /* hinzugefügt wg. besserer Lesbarkeit*/
 	margin: 0 !important;
 	min-width: 120px;
@@ -123,6 +126,11 @@
 .fee_toolbar a::after
 {
 	content: "" !important;
+}
+#fee_content_add_item,
+#fee_news_edit_item
+{
+	display: none;
 }
 .fee_editable:hover .fee_toolbar,
 .fee_flash .fee_toolbar,

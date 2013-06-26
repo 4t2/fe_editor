@@ -38,3 +38,9 @@ $GLOBALS['TL_LANG']['FEE']['edit_content'] = 'Inhaltselement ID %d bearbeiten';
 $GLOBALS['TL_LANG']['FEE']['edit_content_add'] = 'Inhaltselement nach ID %d einfügen';
 $GLOBALS['TL_LANG']['FEE']['edit_news'] = 'Nachrichtenbeitrag ID %d bearbeiten';
 $GLOBALS['TL_LANG']['FEE']['edit_news_archive'] = 'Nachrichtenarchiv ID %d bearbeiten';
+
+$GLOBALS['TL_LANG']['tl_settings']['frontendEditorEditGroups'] = array
+(
+	'+' => 'Alle Benutzer',
+	'-' => 'Dekativieren'
+);
