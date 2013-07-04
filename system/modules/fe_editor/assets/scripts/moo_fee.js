@@ -279,6 +279,10 @@ console.log(reload);
 					onOpen: function(el)
 					{
 						bodyTop = $(document.body).getScroll().y;
+						bodyPosition = $(document.body).getStyle('position');
+						
+						$(document.body).setStyle('position', 'fixed');
+
 						reloadOnClose = false;
 
 						if ($$(el).get('data-mediabox') == 'content')
@@ -289,6 +293,11 @@ console.log(reload);
 						{
 							window.onLoadContaoBackend = function(href, reload) {};
 						}
+					},
+					onClose: function(el)
+					{
+						$(document.body).setStyle('position', bodyPosition);
+						$(document.body).scrollTo(0, bodyTop);
 					}
 				}
 			});

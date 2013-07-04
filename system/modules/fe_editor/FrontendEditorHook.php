@@ -55,7 +55,7 @@ class FrontendEditorHook extends \Controller
 		$GLOBALS['TL_CSS'][] = 'system/modules/fe_editor/assets/styles/fee.css';
 		
 		if ($GLOBALS['TL_CONFIG']['frontendEditorFramework'] == 'mootools' ||
-			$GLOBALS['TL_CONFIG']['frontendEditorFramework'] == 'auto' && (version_compare(VERSION, '3', '<') || $objPage->hasMooTools))
+			($GLOBALS['TL_CONFIG']['frontendEditorFramework'] == 'auto' && (version_compare(VERSION, '3', '<') || $objPage->hasMooTools)))
 		{
 			$GLOBALS['TL_CSS'][] = 'system/modules/fe_editor/assets/cerabox/style/cerabox.css';
 

@@ -57,7 +57,7 @@ class FrontendEditorBackendHook extends \Controller
 
 		return $strContent;
 	}
-	
+
 	public function outputBackendTemplate($strBuffer, $strTemplate)
 	{
 		$this->import('BackendUser', 'User');
