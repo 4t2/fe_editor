@@ -221,6 +221,8 @@
 			else
 			{
 				$$('.fe_editor').removeClass('fee_editable');
+				$$('.fe_editor').removeEvents('mouseenter');
+				$$('.fe_editor').removeEvents('mouseleave');
 			}
 		};
 	
