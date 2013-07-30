@@ -56,6 +56,9 @@
 {
 	visibility: hidden;
 	position: absolute;
+	-moz-box-sizing: content-box;
+	-webkit-box-sizing: content-box;
+	box-sizing: content-box;
 	margin-top: -32px;
 	padding: 0 !important;
 	height: 60px;
@@ -88,7 +91,8 @@
 	padding-right: 8px !important;
 	border-right: 1px solid silver !important;
 }
-.fee_toolbar li a {
+.fee_toolbar li a
+{
 	padding: 0 !important;
 	width:  16px;
 	height:  16px;
@@ -110,6 +114,7 @@
 }
 .fee_toolbar p
 {
+	box-sizing: content-box;
 	height: 18px !important; /* hinzugefügt wg. besserer Lesbarkeit*/
 	margin: 0 !important;
 	min-width: 120px;
@@ -127,6 +132,7 @@
 {
 	content: "" !important;
 }
+
 #fee_content_add_item,
 #fee_news_edit_item
 {

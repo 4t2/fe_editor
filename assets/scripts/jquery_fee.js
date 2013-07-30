@@ -55,10 +55,12 @@
 			'id' : 'fee_settings',
 			'html' : '<a accesskey="e"></a>'
 		});
-	
+
 		$(document.body).append(feeSettings);
 
 		$(document.body).append(feeToolbar);
+		
+		var feeActive = undefined;
 
 		feeSettings.setState = function(checked, flash)
 		{
@@ -66,7 +68,7 @@
 			$(this).data('checked', checked);
 
 			$.cookie('fee_checked', checked);
-
+			
 			if (checked == 1)
 			{
 				$('.fe_editor').addClass('fee_editable');
@@ -75,7 +77,7 @@
 				{
 					data = JSON.parse($(this).attr('data-fee'));
 
-					$(this).prepend(feeToolbar);
+					//$(this).prepend(feeToolbar);
 
 					if (data.content != undefined)
 					{
@@ -84,7 +86,7 @@
 							$('#fee_content_edit').attr('href', 'contao/main.php?do='+data.do+'&table=tl_content&act=edit&fee=1&rt='+data.rt+'&id='+data.content);
 							$('#fee_content_edit').attr('data-statusbar', data.contentTitle);
 
-							$('#fee_statusbar').attr('text', data.contentTitle);
+							$('#fee_statusbar').text(data.contentTitle);
 						}
 						else
 						{
@@ -115,14 +117,14 @@
 
 							$('#fee_news_edit_item').css('display', 'inline-block');
 							
-							$('#fee_statusbar').attr('text', data.newsTitle);
+							$('#fee_statusbar').text(data.newsTitle);
 						}
 						else
 						{
 							$('#fee_content_edit_item').css('display', 'none');
 							$('#fee_news_edit_item').css('display', 'none');
 						}
-	
+
 						$('#fee_content_add_item').css('display', 'none');
 					}
 
@@ -146,14 +148,41 @@
 						$('#fee_page_edit_item').css('display', 'none');
 					}
 
-					feeToolbar.css('left', $(this).offset().left);
-					feeToolbar.css('top', $(this).offset().top);
+					offset = $(this).offset();
 
-					if ($(this).offset().top < 35)
+					feeToolbar.offset({ left: offset.left, top: (offset.top > 32 ? offset.top-32 : offset.top)});
+					
+					feeToolbar.css('visibility', 'visible');
+					
+					feeActive = $(this);
+				});
+				
+				$('.fe_editor').bind('mouseleave', function(e)
+				{
+					feeToolbar.css('visibility', 'hidden');
+				});
+
+
+				feeToolbar.bind('mouseenter', function(e)
+				{
+					feeToolbar.css('visibility', 'visible');
+
+					if (feeActive != undefined)
 					{
-						feeToolbar.css('margin-top', '0');
+						feeActive.addClass('fee_flash');
 					}
 				});
+
+				feeToolbar.bind('mouseleave', function(e)
+				{
+					feeToolbar.css('visibility', 'hidden');
+
+					if (feeActive != undefined)
+					{
+						feeActive.removeClass('fee_flash');
+					}
+				});
+
 
 				if (flash)
 				{
@@ -169,6 +198,7 @@
 			{
 				$('.fe_editor').removeClass('fee_editable');
 				$('.fe_editor').unbind('mouseenter');
+				$('.fe_editor').unbind('mouseleave');
 			}
 		};
 
@@ -265,6 +295,10 @@
 			}
 		});
 
+		$('#fee_toolbar a').bind('click', function(e)
+		{
+			feeToolbar.css('visibility', 'hidden');
+		});
 		
 		$('#fee_toolbar a')
 			.bind('mouseenter', function(e)
@@ -273,44 +307,50 @@
 			});
 
 		$('#fee_content_edit')
-			.bind('mouseenter', function(e) {
-				$(this).parents('.fe_editor')
-					.css('outline-color', 'red');
+			.bind('mouseenter', function(e)
+			{
+				$(this).parents('.fe_editor').css('outline-color', 'red');
 			})
-			.bind('mouseleave', function(e) {
+			.bind('mouseleave', function(e)
+			{
 				$(this).parents('.fe_editor').css('outline-color', 'black');
 			});
 
 		$('#fee_content_add')
-			.bind('mouseenter', function(e) {
-				$(this).parents('.fe_editor')
-					.css('outline-color', 'green');
+			.bind('mouseenter', function(e)
+			{
+				$(this).parents('.fe_editor').css('outline-color', 'green');
 			})
-			.bind('mouseleave', function(e) {
+			.bind('mouseleave', function(e)
+			{
 				$(this).parents('.fe_editor').css('outline-color', 'black');
 			});
 	
 		$('#fee_article_edit')
-			.bind('mouseenter', function(e) {
+			.bind('mouseenter', function(e)
+			{
 				$(this).parents('.mod_article')
 					.css({
 						'outline': '2px dotted red',
 						'outline-offset': '-2px'
 					});
 			})
-			.bind('mouseleave', function(e) {
+			.bind('mouseleave', function(e)
+			{
 				$(this).parents('.mod_article').css('outline', 'none');
 			});
 	
 		$('#fee_page_edit')
-			.bind('mouseenter', function(e) {
+			.bind('mouseenter', function(e)
+			{
 				$(document.body)
 					.css({
 						'outline': '5px dotted red',
 						'outline-offset': '-5px'
 					});
 			})
-			.bind('mouseleave', function(e) {
+			.bind('mouseleave', function(e)
+			{
 				$(document.body).css('outline', 'none');
 			});
 
