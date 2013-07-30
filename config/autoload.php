@@ -16,6 +16,6 @@
  */
 ClassLoader::addClasses(array
 (
-	'FrontendEditorHook'        => 'system/modules/fe_editor/FrontendEditorHook.php',
-	'FrontendEditorBackendHook' => 'system/modules/fe_editor/FrontendEditorBackendHook.php'
+	'FrontendEditorHook'        => 'system/modules/frontend_editor/FrontendEditorHook.php',
+	'FrontendEditorBackendHook' => 'system/modules/frontend_editor/FrontendEditorBackendHook.php'
 ));

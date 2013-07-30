@@ -34,15 +34,15 @@
 	 	feeToolbarList = $('<ul>');
 
 	 	feeToolbarList
-	 		.append('<li id="fee_content_edit_item"><a id="fee_content_edit" class="mediabox" data-mediabox="content" href=""><img src="system/modules/fe_editor/assets/images/pencil.png" width="16" height="16" alt="c"></a></li>')
+	 		.append('<li id="fee_content_edit_item"><a id="fee_content_edit" class="mediabox" data-mediabox="content" href=""><img src="system/modules/frontend_editor/assets/images/pencil.png" width="16" height="16" alt="c"></a></li>')
 
-		 	.append('<li id="fee_article_edit_item"><a id="fee_article_edit" class="mediabox" href=""><img src="system/modules/fe_editor/assets/images/page_white_edit.png" width="16" height="16" alt="a"></a></li>')
+		 	.append('<li id="fee_article_edit_item"><a id="fee_article_edit" class="mediabox" href=""><img src="system/modules/frontend_editor/assets/images/page_white_edit.png" width="16" height="16" alt="a"></a></li>')
 
-		 	.append('<li id="fee_page_edit_item"><a id="fee_page_edit" class="mediabox" href=""><img src="system/modules/fe_editor/assets/images/page_edit.png" width="16" height="16" alt="p"></a></li>')
+		 	.append('<li id="fee_page_edit_item"><a id="fee_page_edit" class="mediabox" href=""><img src="system/modules/frontend_editor/assets/images/page_edit.png" width="16" height="16" alt="p"></a></li>')
 
-		 	.append('<li id="fee_news_edit_item"><a id="fee_news_edit" class="mediabox" href=""><img src="system/modules/fe_editor/assets/images/script_edit.png" width="16" height="16" alt="n"></a></li>')
+		 	.append('<li id="fee_news_edit_item"><a id="fee_news_edit" class="mediabox" href=""><img src="system/modules/frontend_editor/assets/images/script_edit.png" width="16" height="16" alt="n"></a></li>')
 		 	
-		 	.append('<li id="fee_content_add_item"><a id="fee_content_add" class="mediabox" data-mediabox="content" href=""><img src="system/modules/fe_editor/assets/images/pencil_add.png" width="16" height="16" alt="+"></a></li>');
+		 	.append('<li id="fee_content_add_item"><a id="fee_content_add" class="mediabox" data-mediabox="content" href=""><img src="system/modules/frontend_editor/assets/images/pencil_add.png" width="16" height="16" alt="+"></a></li>');
 
 	 	feeToolbar.prepend(feeToolbarList);
 
@@ -64,7 +64,7 @@
 
 		feeSettings.setState = function(checked, flash)
 		{
-			$(this).css('background-image', 'url(system/modules/fe_editor/assets/images/application'+(checked==1?'_edit.png':'.png')+')');
+			$(this).css('background-image', 'url(system/modules/frontend_editor/assets/images/application'+(checked==1?'_edit.png':'.png')+')');
 			$(this).data('checked', checked);
 
 			$.cookie('fee_checked', checked);
@@ -221,7 +221,7 @@
 			'html' : '<a accesskey="p"></a>'
 		});
 
-		feePreview.css('background-image', 'url(system/modules/fe_editor/assets/images/lightbulb'+($.cookie('FE_PREVIEW')==1?'.png':'_off.png')+')');
+		feePreview.css('background-image', 'url(system/modules/frontend_editor/assets/images/lightbulb'+($.cookie('FE_PREVIEW')==1?'.png':'_off.png')+')');
 	
 		$(document.body).append(feePreview);
 	
@@ -309,35 +309,52 @@
 		$('#fee_content_edit')
 			.bind('mouseenter', function(e)
 			{
-				$(this).parents('.fe_editor').css('outline-color', 'red');
+				if (feeActive != undefined)
+				{
+					feeActive.css('outline-color', 'red');
+				}
 			})
 			.bind('mouseleave', function(e)
 			{
-				$(this).parents('.fe_editor').css('outline-color', 'black');
+				if (feeActive != undefined)
+				{
+					feeActive.css('outline-color', 'black');
+				}
 			});
 
 		$('#fee_content_add')
 			.bind('mouseenter', function(e)
 			{
-				$(this).parents('.fe_editor').css('outline-color', 'green');
+				if (feeActive != undefined)
+				{
+					feeActive.css('outline-color', 'green');
+				}
 			})
 			.bind('mouseleave', function(e)
 			{
-				$(this).parents('.fe_editor').css('outline-color', 'black');
+				if (feeActive != undefined)
+				{
+					feeActive.css('outline-color', 'black');
+				}
 			});
 	
 		$('#fee_article_edit')
 			.bind('mouseenter', function(e)
 			{
-				$(this).parents('.mod_article')
-					.css({
+				if (feeActive != undefined)
+				{
+					feeActive.parents('.mod_article').css({
 						'outline': '2px dotted red',
 						'outline-offset': '-2px'
 					});
+				}
 			})
 			.bind('mouseleave', function(e)
 			{
-				$(this).parents('.mod_article').css('outline', 'none');
+				if (feeActive != undefined)
+				{
+					feeActive.parents('.mod_article').css('outline', 'none');
+				}
 			});
 	
 		$('#fee_page_edit')

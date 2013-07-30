@@ -52,23 +52,23 @@ class FrontendEditorHook extends \Controller
 			$GLOBALS['TL_JAVASCRIPT'] = array();
 		}
 
-		$GLOBALS['TL_CSS'][] = 'system/modules/fe_editor/assets/styles/fee.css';
+		$GLOBALS['TL_CSS'][] = 'system/modules/frontend_editor/assets/styles/fee.css';
 		
 		if ($GLOBALS['TL_CONFIG']['frontendEditorFramework'] == 'mootools' ||
 			($GLOBALS['TL_CONFIG']['frontendEditorFramework'] == 'auto' && (version_compare(VERSION, '3', '<') || $objPage->hasMooTools)))
 		{
-			$GLOBALS['TL_CSS'][] = 'system/modules/fe_editor/assets/cerabox/style/cerabox.css';
+			$GLOBALS['TL_CSS'][] = 'system/modules/frontend_editor/assets/cerabox/style/cerabox.css';
 
-			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/assets/cerabox/cerabox.min.js';
-			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/assets/scripts/moo_fee.js';
+			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/frontend_editor/assets/cerabox/cerabox.min.js';
+			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/frontend_editor/assets/scripts/moo_fee.js';
 		}
 		elseif ($GLOBALS['TL_CONFIG']['frontendEditorFramework'] == 'jquery' || $objPage->hasJQuery)
 		{
 			$GLOBALS['TL_CSS'][] = TL_ASSETS_URL.'assets/jquery/colorbox/'. COLORBOX .'/css/colorbox.min.css||static';
 
 			$GLOBALS['TL_JAVASCRIPT'][] = TL_ASSETS_URL.'assets/jquery/colorbox/'. COLORBOX .'/js/colorbox.min.js';
-			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/assets/jquery-cookie/jquery.cookie.js';
-			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/fe_editor/assets/scripts/jquery_fee.js';
+			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/frontend_editor/assets/jquery-cookie/jquery.cookie.js';
+			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/frontend_editor/assets/scripts/jquery_fee.js';
 		}
 
 		parent::__construct();
