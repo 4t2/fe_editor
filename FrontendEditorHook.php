@@ -64,6 +64,11 @@ class FrontendEditorHook extends \Controller
 		}
 		elseif ($GLOBALS['TL_CONFIG']['frontendEditorFramework'] == 'jquery' || $objPage->hasJQuery)
 		{
+			if (!defined('TL_ASSETS_URL'))
+			{
+				define('TL_ASSETS_URL', $GLOBALS['TL_CONFIG']['frontendEditorAssetsUrl']);
+			}
+
 			$GLOBALS['TL_CSS'][] = TL_ASSETS_URL.'assets/jquery/colorbox/'. COLORBOX .'/css/colorbox.min.css||static';
 
 			$GLOBALS['TL_JAVASCRIPT'][] = TL_ASSETS_URL.'assets/jquery/colorbox/'. COLORBOX .'/js/colorbox.min.js';

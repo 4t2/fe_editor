@@ -54,6 +54,16 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['frontendEditorReload'] = array
 	)
 );
 
+$GLOBALS['TL_DCA']['tl_settings']['fields']['frontendEditorAssetsUrl'] = array
+(
+	'label'			=> &$GLOBALS['TL_LANG']['tl_settings']['frontendEditorAssetsUrl'],
+	'inputType'		=> 'text',
+	'eval'			=> array
+	(
+		'tl_class'	=> 'long'
+	)
+);
+
 $GLOBALS['TL_DCA']['tl_settings']['fields']['frontendEditorEditContent'] = array
 (
 	'label'			=> &$GLOBALS['TL_LANG']['tl_settings']['frontendEditorEditContent'],
@@ -114,8 +124,7 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['frontendEditorAddContent'] = array
 	)
 );
 
-$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] = preg_replace('|(\{frontend_legend\}[^;]+)|im', '$1;{frontend_editor_legend},frontendEditorFramework,frontendEditorReload,frontendEditorEditContent,frontendEditorEditNews,frontendEditorEditArticle,frontendEditorEditPage,frontendEditorAddContent', $GLOBALS['TL_DCA']['tl_settings']['palettes']['default']);
-
+$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] = preg_replace('|(\{frontend_legend\}[^;]+)|im', '$1;{frontend_editor_legend},frontendEditorFramework,frontendEditorReload,'.(defined('TL_ASSETS_URL')?'':'frontendEditorAssetsUrl,').'frontendEditorEditContent,frontendEditorEditNews,frontendEditorEditArticle,frontendEditorEditPage,frontendEditorAddContent', $GLOBALS['TL_DCA']['tl_settings']['palettes']['default']);
 
 
 /**

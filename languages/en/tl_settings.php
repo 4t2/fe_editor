@@ -20,6 +20,7 @@ $GLOBALS['TL_LANG']['tl_settings']['frontendEditorFramework'] = array
 $GLOBALS['TL_LANG']['tl_settings']['frontendEditorReload'] = array('Reload page', 'Instant reload a page if it has been changed in Frontend Editor.');
 
 $GLOBALS['TL_LANG']['tl_settings']['frontendEditorEditContent'] = array('Edit content elements', 'Group can edit content elements');
+$GLOBALS['TL_LANG']['tl_settings']['frontendEditorAssetsUrl'] = array('Assets URL', 'Assets URL folder (only Contao 2.x)');
 $GLOBALS['TL_LANG']['tl_settings']['frontendEditorEditNews'] = array('Edit news', 'Group can edit news');
 $GLOBALS['TL_LANG']['tl_settings']['frontendEditorEditArticle'] = array('Edit articles', 'Group can edit articles');
 $GLOBALS['TL_LANG']['tl_settings']['frontendEditorEditPage'] = array('Edit pages', 'Group can edit pages');
