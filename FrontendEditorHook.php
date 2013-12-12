@@ -128,7 +128,10 @@ class FrontendEditorHook extends \Controller
 			$feeData = array('do' => 'article');
 		}
 
-		if ($this->isActive && $feeData !== FALSE && preg_match('~(.*?)(?!<[a-z]+ class="no-no)(<[a-z]+[^>]*>)(.*)~ism', $strBuffer, $match))
+		$strElements = str_ireplace(',', '|', $GLOBALS['TL_CONFIG']['frontendEditorElements']);
+		$strIgnoreClasses = str_ireplace(array(',', '-'), array('|', '\-'), $GLOBALS['TL_CONFIG']['frontendEditorIgnoreClasses']);
+
+		if ($this->isActive && $feeData !== FALSE && preg_match('~(.*?)(?!<[a-z]+ class="(?:'.$strIgnoreClasses.'))(<(?:'.$strElements.')[^>]*>)(.*)~ism', $strBuffer, $match))
 		{
 			global $objPage;
 

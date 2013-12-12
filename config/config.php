@@ -30,6 +30,8 @@
 
 $GLOBALS['TL_CONFIG']['frontendEditorFramework'] = 'auto';
 $GLOBALS['TL_CONFIG']['frontendEditorReload'] = '1';
+$GLOBALS['TL_CONFIG']['frontendEditorElements'] = 'div,section,nav,pre,ol,ul,dl,figure,table';
+$GLOBALS['TL_CONFIG']['frontendEditorIgnoreClasses'] = 'no-no,no-fe';
 
 $GLOBALS['TL_CONFIG']['frontendEditorEditContent'] = '+';
 $GLOBALS['TL_CONFIG']['frontendEditorEditNews'] = '+';
