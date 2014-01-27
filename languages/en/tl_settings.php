@@ -20,6 +20,7 @@ $GLOBALS['TL_LANG']['tl_settings']['frontendEditorFramework'] = array
 $GLOBALS['TL_LANG']['tl_settings']['frontendEditorReload'] = array('Reload page', 'Instant reload a page if it has been changed in Frontend Editor.');
 $GLOBALS['TL_LANG']['tl_settings']['frontendEditorElements'] = array('HTML elements', 'Allowed HTML elements.');
 $GLOBALS['TL_LANG']['tl_settings']['frontendEditorIgnoreClasses'] = array('Ignore classes', 'Ignore elements with this classes.');
+$GLOBALS['TL_LANG']['tl_settings']['frontendEditorIgnoreContent'] = array('Ignore content elements', 'Ignore these content elements.');
 
 $GLOBALS['TL_LANG']['tl_settings']['frontendEditorEditContent'] = array('Edit content elements', 'Group can edit content elements');
 $GLOBALS['TL_LANG']['tl_settings']['frontendEditorAssetsUrl'] = array('Assets URL', 'Assets URL folder (only Contao 2.x)');

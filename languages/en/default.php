@@ -34,7 +34,7 @@
  */
 $GLOBALS['TL_LANG']['FEE']['edit_page'] = 'Edit page ID %d';
 $GLOBALS['TL_LANG']['FEE']['edit_article'] = 'Edit article ID %d';
-$GLOBALS['TL_LANG']['FEE']['edit_content'] = 'Edit content element ID %d';
+$GLOBALS['TL_LANG']['FEE']['edit_content'] = 'Edit content element ID %d (%s)';
 $GLOBALS['TL_LANG']['FEE']['edit_content_add'] = 'Add content element after ID %d';
 $GLOBALS['TL_LANG']['FEE']['edit_news'] = 'Edit news article ID %d';
 $GLOBALS['TL_LANG']['FEE']['edit_news_archive'] = 'Edit news archive ID %d';

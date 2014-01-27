@@ -35,12 +35,18 @@ class FrontendEditorHook extends \Controller
 		'tl_boxes4ward_article' => 'boxes4ward'
 	);
 
+	protected $strIgnoreClasses;
+	protected $arrIgnoreContent;
+
 
 	public function __construct()
 	{
 		global $objPage;
 
 		$this->isActive = true;
+
+		$this->strIgnoreClasses = str_ireplace(array(',', '-'), array('|', '\-'), $GLOBALS['TL_CONFIG']['frontendEditorIgnoreClasses']);
+		$this->arrIgnoreContent = explode(',', $GLOBALS['TL_CONFIG']['frontendEditorIgnoreContent']);
 
 		if (!is_array($GLOBALS['TL_CSS']))
 		{
@@ -108,6 +114,11 @@ class FrontendEditorHook extends \Controller
 
 	public function getContentElementHook($objRow, $strBuffer)
 	{
+		if (in_array($objRow->type, $this->arrIgnoreContent))
+		{
+			return $strBuffer;
+		}
+
 		if ($objRow->do != '') // from GlobalContentelements
 		{
 			$feeData = array('do' => $objRow->do);
@@ -129,9 +140,8 @@ class FrontendEditorHook extends \Controller
 		}
 
 		$strElements = str_ireplace(',', '|', $GLOBALS['TL_CONFIG']['frontendEditorElements']);
-		$strIgnoreClasses = str_ireplace(array(',', '-'), array('|', '\-'), $GLOBALS['TL_CONFIG']['frontendEditorIgnoreClasses']);
 
-		if ($this->isActive && $feeData !== FALSE && preg_match('~(.*?)(?!<[a-z]+ class="(?:'.$strIgnoreClasses.'))(<(?:'.$strElements.')[^>]*>)(.*)~ism', $strBuffer, $match))
+		if ($this->isActive && $feeData !== FALSE && preg_match('~(.*?)(?!<[a-z]+ class="(?:'.$this->strIgnoreClasses.'))(<(?:'.$strElements.')[^>]*>)(.*)~ism', $strBuffer, $match))
 		{
 			global $objPage;
 
@@ -173,7 +183,7 @@ class FrontendEditorHook extends \Controller
 				if (in_array('EditContent', $arrButtons))
 				{
 					$feeData['content'] = $objRow->id;
-					$feeData['contentTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_content'], $objRow->id);
+					$feeData['contentTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_content'], $objRow->id, $objRow->type);
 				}
 				
 				if (in_array('AddContent', $arrButtons))
