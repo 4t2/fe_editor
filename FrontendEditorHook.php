@@ -21,9 +21,9 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Lingo4you 2013
+ * @copyright  Lingo4you 2014
  * @author     Mario Müller <http://www.lingolia.com/>
- * @version    2.0.0
+ * @version    2.1.1
  * @package    FrontendEditor
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
@@ -31,7 +31,8 @@
 class FrontendEditorHook extends \Controller
 {
 	protected $isActive = false;
-	protected $arrParentTables = array(
+	protected $arrParentTables = array
+	(
 		'tl_boxes4ward_article' => 'boxes4ward'
 	);
 
@@ -47,6 +48,14 @@ class FrontendEditorHook extends \Controller
 
 		$this->strIgnoreClasses = str_ireplace(array(',', '-'), array('|', '\-'), $GLOBALS['TL_CONFIG']['frontendEditorIgnoreClasses']);
 		$this->arrIgnoreContent = explode(',', $GLOBALS['TL_CONFIG']['frontendEditorIgnoreContent']);
+
+		parent::__construct();
+	}
+
+
+	public function generatePageHook($objPage, $objLayout, $objPageRegular)
+	{
+		global $objPage;
 
 		if (!is_array($GLOBALS['TL_CSS']))
 		{
@@ -81,8 +90,6 @@ class FrontendEditorHook extends \Controller
 			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/frontend_editor/assets/jquery-cookie/jquery.cookie.js';
 			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/frontend_editor/assets/scripts/jquery_fee.js';
 		}
-
-		parent::__construct();
 	}
 
 	public function outputFrontendTemplateHook($strContent, $strTemplate)
@@ -94,19 +101,8 @@ class FrontendEditorHook extends \Controller
 
 		return $strContent;
 	}
-/*
-	public function generatePageHook(Database_Result $objPage, Database_Result $objLayout, PageRegular $objPageRegular)
-	{
-		if ($this->isActive)
-		{
-			$mootools = unserialize($objLayout->mootools);
-			$mootools[] = 'moo_mediabox';
-			$mootools = array_unique($mootools);
 
-			$objLayout->mootools = serialize($mootools);
-		}
-	}
-*/
+
 	public function parseArticlesHook($objTemplate, $arrArticles)
 	{
 		$objTemplate->text = '<!-- FEE-NEWS '.$objTemplate->id.' '.$objTemplate->pid.' NEWS-FEE -->'.$objTemplate->text;
@@ -141,7 +137,7 @@ class FrontendEditorHook extends \Controller
 
 		$strElements = str_ireplace(',', '|', $GLOBALS['TL_CONFIG']['frontendEditorElements']);
 
-		if ($this->isActive && $feeData !== FALSE && preg_match('~(.*?)(?!<[a-z]+ class="(?:'.$this->strIgnoreClasses.'))(<(?:'.$strElements.')[^>]*>)(.*)~ism', $strBuffer, $match))
+		if ($this->isActive && $feeData !== FALSE && preg_match('~(.*?)(?!<[a-z0-9]+ class="(?:'.$this->strIgnoreClasses.'))(<(?:'.$strElements.')[^>]*>)(.*)~ism', $strBuffer, $match))
 		{
 			global $objPage;
 

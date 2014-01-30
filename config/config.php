@@ -30,7 +30,7 @@
 
 $GLOBALS['TL_CONFIG']['frontendEditorFramework'] = 'auto';
 $GLOBALS['TL_CONFIG']['frontendEditorReload'] = '1';
-$GLOBALS['TL_CONFIG']['frontendEditorElements'] = 'div,section,nav,pre,ol,ul,dl,figure,table';
+$GLOBALS['TL_CONFIG']['frontendEditorElements'] = 'div,section,nav,pre,ol,ul,dl,figure,table,h1,h2,h3,h4';
 $GLOBALS['TL_CONFIG']['frontendEditorIgnoreClasses'] = 'no-no,no-fe';
 $GLOBALS['TL_CONFIG']['frontendEditorIgnoreContent'] = 'colsetStart,colsetPart,colsetEnd';
 
@@ -51,6 +51,8 @@ if (isset($_COOKIE['BE_USER_AUTH']) && !empty($_SESSION['BE_DATA']['frontendEdit
 	}
 
 	$GLOBALS['TL_HOOKS']['getContentElement'][] = array('FrontendEditorHook', 'getContentElementHook');
+
+	$GLOBALS['TL_HOOKS']['generatePage'][] = array('FrontendEditorHook', 'generatePageHook');
 }
 
 if (TL_MODE == 'BE')

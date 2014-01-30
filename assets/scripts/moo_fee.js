@@ -2,7 +2,7 @@
  * @package		fe_editor
  *
  * @author 		Mario Müller
- * @version 	2.0.0
+ * @version 	2.1.1
  *
  * This package requires
  * - MooTools 1.4 >
@@ -11,7 +11,7 @@
  *
  * @license http://opensource.org/licenses/lgpl-3.0.html
  *
- * Copyright (c) 2013 Lingo4you, <http://www.lingolia.com/>
+ * Copyright (c) 2014 Lingo4you, <http://www.lingolia.com/>
  *
  */
 
@@ -28,26 +28,27 @@
 	 
 	 	feeToolbarList = new Element('ul');
 	 	 	
-	 	feeToolbarList.adopt(
+	 	feeToolbarList.adopt
+	 	(
 		 	new Element('li',
 		 	{
 		 		'id' : 'fee_content_edit_item',
-		 		'html' : '<a id="fee_content_edit" class="cerabox" data-mediabox="content" href=""><img src="system/modules/frontend_editor/assets/images/pencil.png" width="16" height="16" alt="c"></a>'
+		 		'html' : '<a id="fee_content_edit" class="cerabox" data-mediabox="content" href=""></a>'
 		 	}),
 		 	new Element('li',
 		 	{
 		 		'id' : 'fee_article_edit_item',
-		 		'html' : '<a id="fee_article_edit" class="cerabox" href=""><img src="system/modules/frontend_editor/assets/images/page_white_edit.png" width="16" height="16" alt="c"></a>'
+		 		'html' : '<a id="fee_article_edit" class="cerabox" href=""></a>'
 		 	}),
 		 	new Element('li',
 		 	{
 		 		'id' : 'fee_page_edit_item',
-		 		'html' : '<a id="fee_page_edit" class="cerabox" href=""><img src="system/modules/frontend_editor/assets/images/page_edit.png" width="16" height="16" alt="c"></a>'
+		 		'html' : '<a id="fee_page_edit" class="cerabox" href=""></a>'
 		 	}),
 		 	new Element('li',
 		 	{
 		 		'id' : 'fee_news_edit_item',
-		 		'html' : '<a id="fee_news_edit" class="cerabox" href=""><img src="system/modules/frontend_editor/assets/images/script_edit.png" width="16" height="16" alt="c"></a>',
+		 		'html' : '<a id="fee_news_edit" class="cerabox" href=""></a>',
 		 		'styles' : {
 		 			'display' : 'none'
 		 		}
@@ -56,7 +57,7 @@
 		 	new Element('li',
 		 	{
 		 		'id' : 'fee_content_add_item',
-		 		'html' : '<a id="fee_content_add" class="cerabox" data-mediabox="content" href=""><img src="system/modules/frontend_editor/assets/images/pencil_add.png" width="16" height="16" alt="c"></a>',
+		 		'html' : '<a id="fee_content_add" class="cerabox" data-mediabox="content" href=""></a>',
 		 		'styles' : {
 		 			'display' : 'none'
 		 		}
@@ -72,7 +73,7 @@
 		var feeSettings = new Element('div',
 		{
 			'id' : 'fee_settings',
-			'html' : '<a accesskey="e"></a>'
+			'html' : '<a id="fee_settings_icon" accesskey="e"></a>'
 		});
 	
 		$(document.body).grab(feeSettings, 'bottom');
@@ -83,7 +84,7 @@
 
 		feeSettings.setState = function(checked, flash)
 		{
-			this.setStyle('background-image', 'url(system/modules/frontend_editor/assets/images/application'+(checked==1?'_edit.png':'.png')+')');
+			$('fee_settings_icon').setStyle('background-position', '0 '+(checked==1?'-32px':'0'));
 			this.store('checked', checked);
 
 			Cookie.write('fee_checked', checked);
@@ -169,7 +170,7 @@
 
 					offset = this.getPosition();
 
-					$('fee_toolbar').setPosition({ x: offset.x, y: (offset.y > 32 ? offset.y-32 : offset.y)});
+					$('fee_toolbar').setPosition({ x: offset.x, y: (offset.y > 44 ? offset.y-44 : offset.y)});
 					
 					feeToolbar.setStyle('visibility', 'visible');
 					
@@ -242,12 +243,13 @@
 		var feePreview = new Element('div',
 		{
 			'id' : 'fee_preview',
-			'html' : '<a accesskey="p"></a>'
+			'html' : '<a id="fee_preview_icon" accesskey="p"></a>'
 		});
-	
-		feePreview.setStyle('background-image', 'url(system/modules/frontend_editor/assets/images/lightbulb'+(Cookie.read('FE_PREVIEW')==1?'.png':'_off.png')+')');
-	
+
 		$(document.body).grab(feePreview, 'bottom');
+
+		$('fee_preview_icon').setStyle('background-position', '0 '+(Cookie.read('FE_PREVIEW')==1?'-32px':'0'));
+
 	
 		feePreview.addEvent('click', function(e)
 		{
