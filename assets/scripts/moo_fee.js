@@ -2,7 +2,7 @@
  * @package		fe_editor
  *
  * @author 		Mario Müller
- * @version 	2.1.1
+ * @version 	2.2.1
  *
  * This package requires
  * - MooTools 1.4 >

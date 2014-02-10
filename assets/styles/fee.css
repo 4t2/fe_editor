@@ -3,8 +3,6 @@
 	position: fixed;
 	top: 0;
 	left:  0;
-	height: 32px;
-	width:  32px;
 	padding: 2px;
 	z-index: 9999;
 	border-right: 2px solid black;
@@ -36,8 +34,6 @@
 	position: fixed;
 	top: 0;
 	right:  0;
-	height: 32px;
-	width:  32px;
 	padding: 2px;
 	z-index: 9999;
 	border-left: 2px solid black;
@@ -45,10 +41,10 @@
 	border-bottom-left-radius: 5px;
 	font-size: 12px;
 	line-height: 0;
-	background: url('../images/lightbulb_off.png') no-repeat 10px 5px #fff;
 	-moz-box-shadow: 1px 1px 2px #858585;
 	-webkit-box-shadow: 1px 1px 2px #858585;
 	box-shadow: 1px 1px 2px #858585;
+	background-color: white;
 	cursor: pointer;
 }
 #fee_preview_icon
@@ -90,8 +86,8 @@
 	height: 42px;
 	margin: 0 !important;
 	padding: 0 !important;
-	min-width: 180px;
-	max-width: 180px;
+	min-width: 120px;
+	max-width: 185px;
 	background-color: #4a4a4a;
 	border: 3px solid #4a4a4a;
 	border-top-left-radius: 5px;

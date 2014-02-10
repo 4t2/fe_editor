@@ -2,7 +2,7 @@
  * @package		fe_editor
  *
  * @author 		Mario Müller
- * @version 	2.1.1
+ * @version 	2.2.1
  *
  * This package requires
  * - JQuery >
@@ -150,7 +150,7 @@
 
 					offset = $(this).offset();
 
-					feeToolbar.offset({ left: offset.left, top: (offset.top > 32 ? offset.top-32 : offset.top)});
+					feeToolbar.offset({ left: offset.left, top: (offset.top > 42 ? offset.top-42 : offset.top)});
 					
 					feeToolbar.css('visibility', 'visible');
 					
