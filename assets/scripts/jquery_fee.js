@@ -2,7 +2,7 @@
  * @package		fe_editor
  *
  * @author 		Mario Müller
- * @version 	2.2.1
+ * @version 	2.2.2
  *
  * This package requires
  * - JQuery >
@@ -67,7 +67,7 @@
 			$('#fee_settings_icon').css('background-position', '0 '+(checked==1?'-32px':'0'));
 			$(this).data('checked', checked);
 
-			$.cookie('fee_checked', checked);
+			$.cookie('fee_checked', checked, { 'domain' : feeCookieDomain });
 			
 			if (checked == 1)
 			{
@@ -229,11 +229,11 @@
 		{
 			if ($.cookie('FE_PREVIEW') == 1)
 			{
-				$.cookie('FE_PREVIEW', '');
+				$.cookie('FE_PREVIEW', '', { 'domain' : feeCookieDomain });
 			}
 			else
 			{
-				$.cookie('FE_PREVIEW', '1');
+				$.cookie('FE_PREVIEW', '1', { 'domain' : feeCookieDomain });
 			}
 	
 			document.location.reload();

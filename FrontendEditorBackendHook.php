@@ -23,7 +23,7 @@
  * PHP version 5
  * @copyright  Lingo4you 2014
  * @author     Mario Müller <http://www.lingolia.com/>
- * @version    2.1.1
+ * @version    2.2.2
  * @package    FrontendEditor
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */

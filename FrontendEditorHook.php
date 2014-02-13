@@ -23,12 +23,12 @@
  * PHP version 5
  * @copyright  Lingo4you 2014
  * @author     Mario Müller <http://www.lingolia.com/>
- * @version    2.1.1
+ * @version    2.2.2
  * @package    FrontendEditor
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-class FrontendEditorHook extends \Controller
+class FrontendEditorHook extends \Backend
 {
 	protected $isActive = false;
 	protected $arrParentTables = array
@@ -55,6 +55,11 @@ class FrontendEditorHook extends \Controller
 
 	public function generatePageHook($objPage, $objLayout, $objPageRegular)
 	{
+		if (!$this->isActive)
+		{
+			return;
+		}
+
 		global $objPage;
 
 		if (!is_array($GLOBALS['TL_CSS']))
@@ -66,6 +71,21 @@ class FrontendEditorHook extends \Controller
 		{
 			$GLOBALS['TL_JAVASCRIPT'] = array();
 		}
+
+		$arrHead = array();
+
+		$arrHead[] = 'var feeRequestToken="'.(defined('REQUEST_TOKEN')?REQUEST_TOKEN:'').'";';
+
+		if (($cookieDomain = ini_get('session.cookie_domain')) != '')
+		{
+			$arrHead[] = 'var feeCookieDomain="'.$cookieDomain.'";';
+		}
+		else
+		{
+			$arrHead[] = 'var feeCookieDomain="";';
+		}
+
+		$GLOBALS['TL_HEAD'][] = '<script type="text/javascript">'.implode(PHP_EOL, $arrHead).'</script>';
 
 		$GLOBALS['TL_CSS'][] = 'system/modules/frontend_editor/assets/styles/fee.css';
 		
@@ -110,7 +130,7 @@ class FrontendEditorHook extends \Controller
 
 	public function getContentElementHook($objRow, $strBuffer)
 	{
-		if (in_array($objRow->type, $this->arrIgnoreContent))
+		if (!$this->isActive || in_array($objRow->type, $this->arrIgnoreContent))
 		{
 			return $strBuffer;
 		}
@@ -185,6 +205,12 @@ class FrontendEditorHook extends \Controller
 				if (in_array('AddContent', $arrButtons))
 				{
 					$feeData['contentAddTitle'] = sprintf($GLOBALS['TL_LANG']['FEE']['edit_content_add'], $objRow->id);
+				}
+
+				if (in_array('DragContent', $arrButtons))
+				{
+					$feeData['content'] = $objRow->id;
+					$feeData['contentDrag'] = sprintf($GLOBALS['TL_LANG']['FEE']['drag_content'], $objRow->id);
 				}
 			}
 

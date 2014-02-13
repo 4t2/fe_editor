@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Lingo4you 2013
+ * @copyright  Lingo4you 2014
  * @author     Mario Müller <http://www.lingolia.com/>
  * @package    FrontendEditor
  * @license    http://opensource.org/licenses/lgpl-3.0.html
@@ -51,7 +51,6 @@ if (isset($_COOKIE['BE_USER_AUTH']) && !empty($_SESSION['BE_DATA']['frontendEdit
 	}
 
 	$GLOBALS['TL_HOOKS']['getContentElement'][] = array('FrontendEditorHook', 'getContentElementHook');
-
 	$GLOBALS['TL_HOOKS']['generatePage'][] = array('FrontendEditorHook', 'generatePageHook');
 }
 

@@ -2,7 +2,7 @@
  * @package		fe_editor
  *
  * @author 		Mario Müller
- * @version 	2.2.1
+ * @version 	2.2.2
  *
  * This package requires
  * - MooTools 1.4 >
@@ -14,6 +14,9 @@
  * Copyright (c) 2014 Lingo4you, <http://www.lingolia.com/>
  *
  */
+
+feeDragInProgress = false;
+
 
 (function($)
 {
@@ -62,6 +65,13 @@
 		 			'display' : 'none'
 		 		}
 		 	})
+/*
+		 	new Element('li',
+		 	{
+		 		'id' : 'fee_drag_content_item',
+		 		'html' : '<a id="fee_drag_content" href="" onclick="return false;"></a>'
+		 	})
+*/
 		 );
 	
 	 	feeToolbar.grab(feeToolbarList, 'top');
@@ -87,18 +97,84 @@
 			$('fee_settings_icon').setStyle('background-position', '0 '+(checked==1?'-32px':'0'));
 			this.store('checked', checked);
 
-			Cookie.write('fee_checked', checked);
+			Cookie.write('fee_checked', checked, { 'domain' : feeCookieDomain });
 
 			if (checked == 1)
 			{
 				$$('.fe_editor').addClass('fee_editable');
-				
+
 				$$('.fe_editor').addEvent('mouseenter', function(e)
 				{
 					data = JSON.parse(this.get('data-fee'));
-	
-//					$(this).grab(feeToolbar, 'top');
-	
+/*
+					if (!feeDragInProgress)
+					{
+						$('fee_drag_content_item').set('data-fee', this.get('data-fee'));
+
+						$('fee_drag_content_item').addEvent('mouseenter', function(e)
+						{
+							feeDragInProgress = true;
+
+							$('fee_drag_content_item').makeDraggable(
+							{
+								droppables: $$('.fe_editor'),
+
+								onEnter: function(draggable, droppable)
+								{
+									droppable.setStyle('outline', '2px dotted green');
+								},
+								onLeave: function(draggable, droppable)
+								{
+									droppable.setStyle('outline', 'none');
+								},
+								onDrop: function(draggable, droppable)
+								{
+									feeDragInProgress = false;
+
+									if (droppable)
+									{
+										dragData = JSON.parse(draggable.get('data-fee'));
+
+										dropData = JSON.parse(droppable.get('data-fee'));
+
+										if (dragData.do == dragData.do && dragData.content != dropData.content)
+										{
+											if (confirm("Inhaltselement "+dragData.content+" an Stelle "+dropData.content+" verschieben?"))
+											{
+												var dragRequest = new Request(
+												{
+													method: 'get',
+													url: 'contao/main.php',
+													onSuccess: function(responseText, responseXML)
+													{
+														document.location.reload();
+													}
+												}).send('do='+dropData.do+'&table=tl_content&act=cut&mode=1&rt='+dropData.rt+'&id='+dragData.content+'&pid='+dropData.content);
+											}
+										}
+
+										dropLink = draggable.getChildren('a')[0].href;
+										dropLink = dropLink + '&pid=' + dropData.content;
+
+										console.log(dropLink);
+									}
+									else
+									{
+										draggable.setStyle('background', '#C17878');
+									}
+
+									draggable.setStyle('display', 'inline-block');
+									draggable.setStyle('position', 'static');
+									draggable.setStyle('left', '0');
+									draggable.setStyle('top', '0');
+
+									document.location.reload();
+								}
+							});
+						});
+					}
+*/
+
 					if (data.content != undefined)
 					{
 						if (data.contentTitle != undefined)
@@ -123,7 +199,7 @@
 						{
 							$('fee_content_add_item').setStyle('display', 'none');
 						}
-						
+
 						$('fee_news_edit_item').setStyle('display', 'none');	
 					}
 					else if (data.news != undefined)
@@ -184,27 +260,36 @@
 
 				$$('.fe_editor').addEvent('mouseleave', function(e)
 				{
-					feeToolbar.setStyle('visibility', 'hidden');
+					if (!feeDragInProgress)
+					{
+						feeToolbar.setStyle('visibility', 'hidden');
+					}
 				});
 
 
 				feeToolbar.addEvent('mouseenter', function(e)
 				{
-					feeToolbar.setStyle('visibility', 'visible');
-
-					if (feeActive != undefined)
+					if (!feeDragInProgress)
 					{
-						feeActive.addClass('fee_flash');
+						feeToolbar.setStyle('visibility', 'visible');
+
+						if (feeActive != undefined)
+						{
+							feeActive.addClass('fee_flash');
+						}
 					}
 				});
 
 				feeToolbar.addEvent('mouseleave', function(e)
 				{
-					feeToolbar.setStyle('visibility', 'hidden');
-
-					if (feeActive != undefined)
+					if (!feeDragInProgress)
 					{
-						feeActive.removeClass('fee_flash');
+						feeToolbar.setStyle('visibility', 'hidden');
+
+						if (feeActive != undefined)
+						{
+							feeActive.removeClass('fee_flash');
+						}
 					}
 				});
 
@@ -255,11 +340,11 @@
 		{
 			if (Cookie.read('FE_PREVIEW') == 1)
 			{
-				Cookie.write('FE_PREVIEW', '');
+				Cookie.write('FE_PREVIEW', '', { 'domain' : feeCookieDomain });
 			}
 			else
 			{
-				Cookie.write('FE_PREVIEW', '1');
+				Cookie.write('FE_PREVIEW', '1', { 'domain' : feeCookieDomain });
 			}
 	
 			document.location.reload();
@@ -292,8 +377,8 @@
 			};
 
 
-			$$('a.cerabox').cerabox({
-//				width: '980px',
+			$$('a.cerabox').cerabox(
+			{
 				width: function()
 				{
 					if ($$(el).get('data-mediabox') == 'content')
