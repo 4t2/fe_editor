@@ -2,7 +2,7 @@
  * @package		fe_editor
  *
  * @author 		Mario Müller
- * @version 	2.2.2
+ * @version 	2.2.3
  *
  * This package requires
  * - MooTools 1.4 >
@@ -22,15 +22,40 @@ feeDragInProgress = false;
 {
 	window.addEvent('domready', function()
 	{
+		if (feeCookieDomain != '')
+		{
+			feeCookieSettings =
+			{
+				'domain' : feeCookieDomain
+			};
+		}
+		else
+		{
+			feeCookieSettings = {};
+		}
+
 	 	feeToolbar = new Element('div',
 	 	{
 	 		'id' : 'fee_toolbar',
 	 		'class' : 'no-sc fee_toolbar',
 	 		'html' : '<p id="fee_statusbar"></p>'
 	 	});
+
+	 	feeToolbar.close = function()
+	 	{
+ 			if (!feeDragInProgress)
+			{
+				this.setStyle('visibility', 'hidden');
+
+				if (feeActive != undefined)
+				{
+					feeActive.removeClass('fee_flash');
+				}
+			}
+	 	};
 	 
 	 	feeToolbarList = new Element('ul');
-	 	 	
+
 	 	feeToolbarList.adopt
 	 	(
 		 	new Element('li',
@@ -97,7 +122,7 @@ feeDragInProgress = false;
 			$('fee_settings_icon').setStyle('background-position', '0 '+(checked==1?'-32px':'0'));
 			this.store('checked', checked);
 
-			Cookie.write('fee_checked', checked, { 'domain' : feeCookieDomain });
+			Cookie.write('fee_checked', checked, feeCookieSettings);
 
 			if (checked == 1)
 			{
@@ -340,11 +365,11 @@ feeDragInProgress = false;
 		{
 			if (Cookie.read('FE_PREVIEW') == 1)
 			{
-				Cookie.write('FE_PREVIEW', '', { 'domain' : feeCookieDomain });
+				Cookie.write('FE_PREVIEW', '', feeCookieSettings);
 			}
 			else
 			{
-				Cookie.write('FE_PREVIEW', '1', { 'domain' : feeCookieDomain });
+				Cookie.write('FE_PREVIEW', '1', feeCookieSettings);
 			}
 	
 			document.location.reload();
@@ -354,7 +379,7 @@ feeDragInProgress = false;
 		reloadOnClose = false;
 		bodyPosition = 'relative';
 		bodyTop = 0;
-	
+
 		if (!Browser.Platform.ios && !Browser.Platform.android && !Browser.Platform.webos)
 		{
 			contentLink = false;
@@ -379,8 +404,11 @@ feeDragInProgress = false;
 
 			$$('a.cerabox').cerabox(
 			{
-				width: function()
+/*
+				width: function(el)
 				{
+					console.log('width: function(el)');
+
 					if ($$(el).get('data-mediabox') == 'content')
 					{
 						return '750px';
@@ -390,20 +418,27 @@ feeDragInProgress = false;
 						return '980px';
 					}
 				},
+*/
 				//height: $(window).getSize().y+'px',
-				height: '100%',
+				height: '95%',
+				fullSize: true,
 				group: false,
 				fixedPosition: true,
+				preventScrolling: true,
+				//mobileView: false,
 				animation: 'ease',
 				loaderAtItem: true,
 				clickToClose: false,
 				clickToCloseOverlay: false,
 				preventScrolling: true,
 				displayTitle: false,
+				loaderAtItem: true,
 				events:
 				{
 					onOpen: function(el)
 					{
+						feeToolbar.close();
+
 						bodyTop = $(document.body).getScroll().y;
 						bodyPosition = $(document.body).getStyle('position');
 						

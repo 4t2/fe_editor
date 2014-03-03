@@ -23,7 +23,7 @@
  * PHP version 5
  * @copyright  Lingo4you 2014
  * @author     Mario Müller <http://www.lingolia.com/>
- * @version    2.2.2
+ * @version    2.2.3
  * @package    FrontendEditor
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
@@ -36,12 +36,12 @@ class FrontendEditorBackendHook extends \Controller
 		{
 			if ($this->Input->get('fee') == 1 || $this->Input->post('fee') == 1)
 			{
-				$strContent = preg_replace('~<div id="header".*<div id="container"~is', '<div id="container" style="width:730px"', $strContent);
-				$strContent = preg_replace('~<div id="left".*<div id="main"~is', '<div id="main" style="margin-left:0; margin-top:5px;"', $strContent);
+				$strContent = preg_replace('~<div id="header".*<div id="container"~is', '<div id="container" style="width:745px"', $strContent);
+				$strContent = preg_replace('~<div id="left".*<div id="main"~is', '<div id="main" style="margin-left:0; margin-top:0;"', $strContent);
 				$strContent = preg_replace('~(<div id="footer")~is', '$1 style="display:none"', $strContent);
 	
 				$strContent = preg_replace('~<div id="tl_buttons">.*</div>~isU', '$1', $strContent);
-				
+
 				$strContent = preg_replace('~<input[^>]*saveNcreate[^>]*>~', '', $strContent);
 				#$strContent = preg_replace('~<input[^>]*saveNback[^>]*>~', '', $strContent);
 				$strContent = preg_replace('~<input[^>]*saveNback[^>]*>~', '<input type="hidden" name="feeHideOnClose" value="1">', $strContent);
@@ -61,7 +61,7 @@ class FrontendEditorBackendHook extends \Controller
 	public function outputBackendTemplate($strBuffer, $strTemplate)
 	{
 		$this->import('BackendUser', 'User');
-		
+
 		if ($this->User->frontendEditor)
 		{
 			$arrButtons = array('EditContent', 'EditArticle', 'EditPage', 'EditNews', 'AddContent');

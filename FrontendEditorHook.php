@@ -1,29 +1,11 @@
 <?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
- *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
  * @copyright  Lingo4you 2014
  * @author     Mario Müller <http://www.lingolia.com/>
- * @version    2.2.2
+ * @version    2.2.3
  * @package    FrontendEditor
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
@@ -85,7 +67,7 @@ class FrontendEditorHook extends \Backend
 			$arrHead[] = 'var feeCookieDomain="";';
 		}
 
-		$GLOBALS['TL_HEAD'][] = '<script type="text/javascript">'.implode(PHP_EOL, $arrHead).'</script>';
+		$GLOBALS['TL_HEAD'][] = '<script>'.implode(PHP_EOL, $arrHead).'</script>';
 
 		$GLOBALS['TL_CSS'][] = 'system/modules/frontend_editor/assets/styles/fee.css';
 		
@@ -94,8 +76,8 @@ class FrontendEditorHook extends \Backend
 		{
 			$GLOBALS['TL_CSS'][] = 'system/modules/frontend_editor/assets/cerabox/style/cerabox.css';
 
-			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/frontend_editor/assets/cerabox/cerabox.min.js';
-			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/frontend_editor/assets/scripts/moo_fee.js';
+			$GLOBALS['TL_BODY'][] = '<script src="system/modules/frontend_editor/assets/cerabox/cerabox.min.js"></script>';
+			$GLOBALS['TL_BODY'][] = '<script src="system/modules/frontend_editor/assets/scripts/moo_fee.js"></script>';
 		}
 		elseif ($GLOBALS['TL_CONFIG']['frontendEditorFramework'] == 'jquery' || $objPage->hasJQuery)
 		{
@@ -106,20 +88,10 @@ class FrontendEditorHook extends \Backend
 
 			$GLOBALS['TL_CSS'][] = TL_ASSETS_URL.'assets/jquery/colorbox/'. COLORBOX .'/css/colorbox.min.css||static';
 
-			$GLOBALS['TL_JAVASCRIPT'][] = TL_ASSETS_URL.'assets/jquery/colorbox/'. COLORBOX .'/js/colorbox.min.js';
-			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/frontend_editor/assets/jquery-cookie/jquery.cookie.js';
-			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/frontend_editor/assets/scripts/jquery_fee.js';
+			$GLOBALS['TL_BODY'][] = '<script src="'.TL_ASSETS_URL.'assets/jquery/colorbox/'.COLORBOX.'/js/colorbox.min.js"></script>';
+			$GLOBALS['TL_BODY'][] = '<script src="system/modules/frontend_editor/assets/jquery-cookie/jquery.cookie.js"></script>';
+			$GLOBALS['TL_BODY'][] = '<script src="system/modules/frontend_editor/assets/scripts/jquery_fee.js"></script>';
 		}
-	}
-
-	public function outputFrontendTemplateHook($strContent, $strTemplate)
-	{
-		if (substr($strTemplate, 0, 3) == 'fe_')
-		{
-			$strContent = str_ireplace('</head>', '<script type="text/javascript">var request_token="'.(defined('REQUEST_TOKEN')?REQUEST_TOKEN:'').'";</script></head>', $strContent);
-		}
-
-		return $strContent;
 	}
 
 
