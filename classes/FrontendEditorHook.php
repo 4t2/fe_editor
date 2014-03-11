@@ -1,11 +1,13 @@
 <?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
 
 /**
+ * Contao Open Source CMS
+ * Copyright (C) 2005-2014 Leo Feyer
  *
  * PHP version 5
  * @copyright  Lingo4you 2014
  * @author     Mario Müller <http://www.lingolia.com/>
- * @version    2.2.3
+ * @version    2.2.4
  * @package    FrontendEditor
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
@@ -76,8 +78,16 @@ class FrontendEditorHook extends \Backend
 		{
 			$GLOBALS['TL_CSS'][] = 'system/modules/frontend_editor/assets/cerabox/style/cerabox.css';
 
-			$GLOBALS['TL_BODY'][] = '<script src="system/modules/frontend_editor/assets/cerabox/cerabox.min.js"></script>';
-			$GLOBALS['TL_BODY'][] = '<script src="system/modules/frontend_editor/assets/scripts/moo_fee.js"></script>';
+			if (version_compare(VERSION, '3.2', '>='))
+			{
+				$GLOBALS['TL_BODY'][] = '<script src="system/modules/frontend_editor/assets/cerabox/cerabox.min.js"></script>';
+				$GLOBALS['TL_BODY'][] = '<script src="system/modules/frontend_editor/assets/scripts/moo_fee.js"></script>';
+			}
+			else
+			{
+				$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/frontend_editor/assets/cerabox/cerabox.min.js';
+				$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/frontend_editor/assets/scripts/moo_fee.js';
+			}
 		}
 		elseif ($GLOBALS['TL_CONFIG']['frontendEditorFramework'] == 'jquery' || $objPage->hasJQuery)
 		{
@@ -88,9 +98,18 @@ class FrontendEditorHook extends \Backend
 
 			$GLOBALS['TL_CSS'][] = TL_ASSETS_URL.'assets/jquery/colorbox/'. COLORBOX .'/css/colorbox.min.css||static';
 
-			$GLOBALS['TL_BODY'][] = '<script src="'.TL_ASSETS_URL.'assets/jquery/colorbox/'.COLORBOX.'/js/colorbox.min.js"></script>';
-			$GLOBALS['TL_BODY'][] = '<script src="system/modules/frontend_editor/assets/jquery-cookie/jquery.cookie.js"></script>';
-			$GLOBALS['TL_BODY'][] = '<script src="system/modules/frontend_editor/assets/scripts/jquery_fee.js"></script>';
+			if (version_compare(VERSION, '3.2', '>='))
+			{
+				$GLOBALS['TL_BODY'][] = '<script src="'.TL_ASSETS_URL.'assets/jquery/colorbox/'.COLORBOX.'/js/colorbox.min.js"></script>';
+				$GLOBALS['TL_BODY'][] = '<script src="system/modules/frontend_editor/assets/jquery-cookie/jquery.cookie.js"></script>';
+				$GLOBALS['TL_BODY'][] = '<script src="system/modules/frontend_editor/assets/scripts/jquery_fee.js"></script>';
+			}
+			else
+			{
+				$GLOBALS['TL_JAVASCRIPT'][] = TL_ASSETS_URL.'assets/jquery/colorbox/'. COLORBOX .'/js/colorbox.min.js';
+				$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/frontend_editor/assets/jquery-cookie/jquery.cookie.js';
+				$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/frontend_editor/assets/scripts/jquery_fee.js';
+			}
 		}
 	}
 

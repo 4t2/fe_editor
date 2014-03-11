@@ -2,28 +2,12 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
- *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2005-2014 Leo Feyer
  *
  * PHP version 5
  * @copyright  Lingo4you 2014
  * @author     Mario Müller <http://www.lingolia.com/>
- * @version    2.2.3
+ * @version    2.2.4
  * @package    FrontendEditor
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
@@ -36,7 +20,7 @@ class FrontendEditorBackendHook extends \Controller
 		{
 			if ($this->Input->get('fee') == 1 || $this->Input->post('fee') == 1)
 			{
-				$strContent = preg_replace('~<div id="header".*<div id="container"~is', '<div id="container" style="width:745px"', $strContent);
+				$strContent = preg_replace('~<div id="header".*<div id="container"~is', '<div id="container" style="width:766px;margin-left:20px;"', $strContent);
 				$strContent = preg_replace('~<div id="left".*<div id="main"~is', '<div id="main" style="margin-left:0; margin-top:0;"', $strContent);
 				$strContent = preg_replace('~(<div id="footer")~is', '$1 style="display:none"', $strContent);
 	
