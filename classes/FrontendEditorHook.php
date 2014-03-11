@@ -78,7 +78,7 @@ class FrontendEditorHook extends \Backend
 		{
 			$GLOBALS['TL_CSS'][] = 'system/modules/frontend_editor/assets/cerabox/style/cerabox.css';
 
-			if (version_compare(VERSION, '3.2', '>='))
+			if (version_compare(VERSION, '3.1', '>='))
 			{
 				$GLOBALS['TL_BODY'][] = '<script src="system/modules/frontend_editor/assets/cerabox/cerabox.min.js"></script>';
 				$GLOBALS['TL_BODY'][] = '<script src="system/modules/frontend_editor/assets/scripts/moo_fee.js"></script>';
@@ -98,7 +98,7 @@ class FrontendEditorHook extends \Backend
 
 			$GLOBALS['TL_CSS'][] = TL_ASSETS_URL.'assets/jquery/colorbox/'. COLORBOX .'/css/colorbox.min.css||static';
 
-			if (version_compare(VERSION, '3.2', '>='))
+			if (version_compare(VERSION, '3.1', '>='))
 			{
 				$GLOBALS['TL_BODY'][] = '<script src="'.TL_ASSETS_URL.'assets/jquery/colorbox/'.COLORBOX.'/js/colorbox.min.js"></script>';
 				$GLOBALS['TL_BODY'][] = '<script src="system/modules/frontend_editor/assets/jquery-cookie/jquery.cookie.js"></script>';
