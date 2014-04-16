@@ -22,7 +22,7 @@
 	width: 32px;
 	height: 32px;
 	margin: 0;
-	background: #fff url('system/modules/frontend_editor/assets/icons/fee_state.png') no-repeat 0 0;
+	background: #fff url('../icons/fee_state.png') no-repeat 0 0;
 }
 #fee_settings_icon:hover
 {
@@ -53,7 +53,7 @@
 	width: 32px;
 	height: 32px;
 	margin: 0;
-	background: url('system/modules/frontend_editor/assets/icons/preview_state.png') no-repeat 0 0 #fff;
+	background: url('../icons/preview_state.png') no-repeat 0 0 #fff;
 }
 #fee_preview_icon:hover
 {
@@ -120,23 +120,23 @@
 
 #fee_content_edit
 {
-	background-image: url('system/modules/frontend_editor/assets/icons/edit_content.png');
+	background-image: url('../icons/edit_content.png');
 }
 #fee_article_edit
 {
-	background-image: url('system/modules/frontend_editor/assets/icons/edit_article.png');
+	background-image: url('../icons/edit_article.png');
 }
 #fee_page_edit
 {
-	background-image: url('system/modules/frontend_editor/assets/icons/edit_page.png');
+	background-image: url('../icons/edit_page.png');
 }
 #fee_news_edit
 {
-	background-image: url('system/modules/frontend_editor/assets/icons/edit_article.png');
+	background-image: url('../icons/edit_article.png');
 }
 #fee_content_add
 {
-	background-image: url('system/modules/frontend_editor/assets/icons/add_content.png');
+	background-image: url('../icons/add_content.png');
 }
 
 /*
