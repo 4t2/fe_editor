@@ -7,17 +7,18 @@
  * PHP version 5
  * @copyright  Lingo4you 2014
  * @author     Mario Müller <http://www.lingolia.com/>
- * @version    2.2.4
+ * @version    2.2.5
  * @package    FrontendEditor
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-class FrontendEditorHook extends \Backend
+class FrontendEditorHook extends \Frontend
 {
 	protected $isActive = false;
 	protected $arrParentTables = array
 	(
-		'tl_boxes4ward_article' => 'boxes4ward'
+		'tl_boxes4ward_article' => 'boxes4ward',
+		'tl_calendar_events'	=> 'calendar'
 	);
 
 	protected $strIgnoreClasses;
@@ -29,6 +30,7 @@ class FrontendEditorHook extends \Backend
 		global $objPage;
 
 		$this->isActive = true;
+		#$this->isActive = $this->getLoginStatus('BE_USER_AUTH');
 
 		$this->strIgnoreClasses = str_ireplace(array(',', '-'), array('|', '\-'), $GLOBALS['TL_CONFIG']['frontendEditorIgnoreClasses']);
 		$this->arrIgnoreContent = explode(',', $GLOBALS['TL_CONFIG']['frontendEditorIgnoreContent']);
