@@ -26,7 +26,8 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['frontendEditor'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['frontendEditor'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'eval'                    => array(
+	'eval'                    => array
+	(
 		'tl_class' =>	'w50'
 	),
 	'sql'					=> "char(1) NOT NULL default '1'"

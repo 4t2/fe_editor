@@ -7,7 +7,7 @@
  * PHP version 5
  * @copyright  Lingo4you 2014
  * @author     Mario Müller <http://www.lingolia.com/>
- * @version    2.2.4
+ * @version    2.2.5
  * @package    FrontendEditor
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
@@ -42,17 +42,21 @@ class FrontendEditorBackendHook extends \Controller
 		return $strContent;
 	}
 
-	public function outputBackendTemplate($strBuffer, $strTemplate)
-	{
-		$this->import('BackendUser', 'User');
 
-		if ($this->User->frontendEditor)
+	/**
+	 * check user settings
+	 */
+	public function postLoginHook(\BackendUser $objUser)
+	{
+		$objSession = \Session::getInstance();
+
+		if ($objUser->frontendEditor)
 		{
 			$arrButtons = array('EditContent', 'EditArticle', 'EditPage', 'EditNews', 'AddContent');
 		
-			$this->Session->set('frontendEditor', $this->User->frontendEditor);
+			$objSession->set('frontendEditor', $objUser->frontendEditor);
 
-			$arrGroups = $this->User->groups;
+			$arrGroups = $objUser->groups;
 
 			if (!is_null($arrGroups) && is_array($arrGroups))
 			{
@@ -63,7 +67,7 @@ class FrontendEditorBackendHook extends \Controller
 				$arrGroups = array('+');
 			}
 
-			if (!$this->User->isAdmin)
+			if (!$objUser->isAdmin)
 			{
 				for ($i = count($arrButtons)-1; $i >= 0; $i--)
 				{
@@ -74,14 +78,19 @@ class FrontendEditorBackendHook extends \Controller
 				}
 			}
 
-			$this->Session->set('frontendEditorButtons', $arrButtons);
+			$objSession->set('frontendEditorButtons', $arrButtons);
 		}
 		else
 		{
-			$this->Session->set('frontendEditor', '');
+			$objSession->set('frontendEditor', '');
 		}
-
-		return $strBuffer;
 	}
+
+
+	public function postLogoutHook(\BackendUser $objUser)
+	{
+		\Session::getInstance()->set('frontendEditor', '');
+	}
+
 }
 

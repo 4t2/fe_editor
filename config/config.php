@@ -56,6 +56,9 @@ if (isset($_COOKIE['BE_USER_AUTH']) && !empty($_SESSION['BE_DATA']['frontendEdit
 
 if (TL_MODE == 'BE')
 {
+	$GLOBALS['TL_HOOKS']['postLogin'][] = array('FrontendEditorBackendHook', 'postLoginHook');
+	$GLOBALS['TL_HOOKS']['postLogout'][] = array('FrontendEditorBackendHook', 'postLogoutHook');
+
 	$GLOBALS['TL_HOOKS']['parseBackendTemplate'][] = array('FrontendEditorBackendHook', 'parseBackendTemplateHook');
-	$GLOBALS['TL_HOOKS']['outputBackendTemplate'][] = array('FrontendEditorBackendHook', 'outputBackendTemplate');
+#	$GLOBALS['TL_HOOKS']['outputBackendTemplate'][] = array('FrontendEditorBackendHook', 'outputBackendTemplate');
 }

@@ -42,5 +42,5 @@ $GLOBALS['TL_LANG']['FEE']['edit_news_archive'] = 'Nachrichtenarchiv ID %d bearb
 $GLOBALS['TL_LANG']['tl_settings']['frontendEditorEditGroups'] = array
 (
 	'+' => 'Alle Benutzer',
-	'-' => 'Dekativieren'
+	'-' => 'Deaktivieren'
 );
