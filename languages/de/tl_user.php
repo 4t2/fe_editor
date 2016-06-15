@@ -5,7 +5,7 @@
  */
 $GLOBALS['TL_LANG']['tl_user']['frontendEditorLegend'] = 'Frontend Editor';
 
-$GLOBALS['TL_LANG']['tl_user']['frontendEditor'] = array('Frontend Editor aktivieren', 'Aktiviert den Frontend Editor');
+$GLOBALS['TL_LANG']['tl_user']['frontendEditor'] = array('Frontend Editor aktivieren', 'Aktiviert den Frontend Editor. Wird erst nach einer erneuten Anmeldung aktiv.');
 /*
 $GLOBALS['TL_LANG']['tl_user']['frontendEditorTables']['title'] = array('Elemente', 'Frontend Editor für folgende Elemente aktivieren');
 $GLOBALS['TL_LANG']['tl_user']['frontendEditorTables']['reference'] = array(

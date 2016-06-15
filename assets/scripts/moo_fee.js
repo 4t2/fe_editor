@@ -393,6 +393,7 @@ feeDragInProgress = false;
 				else if (contentLink != href)
 				{
 					CeraBoxWindow.close();
+					contentLink = false;
 
 					if (reload)
 					{
@@ -445,6 +446,7 @@ feeDragInProgress = false;
 						$(document.body).setStyle('position', 'fixed');
 
 						reloadOnClose = false;
+						contentLink = false;
 
 						if ($$(el).get('data-mediabox') == 'content')
 						{

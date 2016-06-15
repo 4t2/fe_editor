@@ -1,8 +1,8 @@
 /**
  * @package		fe_editor
  *
- * @author 		Mario Müller
- * @version 	2.2.2
+ * @author 		Mario Müller <mario@lingo4u.de>
+ * @version 	2.3.0
  *
  * This package requires
  * - JQuery >
@@ -10,9 +10,37 @@
  *
  * @license http://opensource.org/licenses/lgpl-3.0.html
  *
- * Copyright (c) 2014 Lingo4you, <http://www.lingolia.com/>
+ * Copyright © 2016 Lingo4you, <https://www.lingolia.com/>
  *
  */
+
+function setFeeCookie(name, value)
+{
+	if (typeof value == 'boolean')
+	{
+		value = (value ? '1' : '');
+	}
+
+	var cookie = name + '=' + value;
+
+	cookie += '; max-age=' + 60*60*24*30;
+	cookie += '; path=/';
+	cookie += (feeCookieDomain != '' ? '; domain=' + feeCookieDomain : '');
+	// cookie += '; secure';
+
+	document.cookie = cookie;
+}
+
+function isFeeCookie(name, value)
+{
+	if (typeof value == 'boolean')
+	{
+		value = (value ? '1' : '');
+	}
+
+	return document.cookie.indexOf(name + '=' + value) != -1;
+}
+
 
 (function($)
 {
@@ -21,7 +49,7 @@
 		/**
 		 * Create toolbar with buttons
 		 */
-	 	feeToolbar = $('<div>',
+	 	var feeToolbar = $('<div>',
 	 	{
 	 		'id' : 'fee_toolbar',
 	 		'class' : 'no-sc fee_toolbar',
@@ -31,18 +59,14 @@
 	 	/**
 	 	 * Add list with toolbar buttons
 	 	 */
-	 	feeToolbarList = $('<ul>');
+	 	var feeToolbarList = $('<ul>');
 
 	 	feeToolbarList
-	 		.append('<li id="fee_content_edit_item"><a id="fee_content_edit" class="mediabox" data-mediabox="content" href=""></a></li>')
-
-		 	.append('<li id="fee_article_edit_item"><a id="fee_article_edit" class="mediabox" href=""></a></li>')
-
-		 	.append('<li id="fee_page_edit_item"><a id="fee_page_edit" class="mediabox" href=""></a></li>')
-
-		 	.append('<li id="fee_news_edit_item"><a id="fee_news_edit" class="mediabox" href=""></a></li>')
-		 	
-		 	.append('<li id="fee_content_add_item"><a id="fee_content_add" class="mediabox" data-mediabox="content" href=""></a></li>');
+	 		.append('<li id="fee_content_edit_item"><span id="fee_content_edit" class="mediabox" data-mediabox="content"></span></li>')
+		 	.append('<li id="fee_article_edit_item"><span id="fee_article_edit" class="mediabox"></span></li>')
+		 	.append('<li id="fee_page_edit_item"><span id="fee_page_edit" class="mediabox"></span></li>')
+		 	.append('<li id="fee_news_edit_item"><span id="fee_news_edit" class="mediabox"></span></li>')
+		 	.append('<li id="fee_content_add_item"><span id="fee_content_add" class="mediabox" data-mediabox="content"></span></li>');
 
 	 	feeToolbar.prepend(feeToolbarList);
 
@@ -64,27 +88,26 @@
 
 		feeSettings.setState = function(checked, flash)
 		{
-			$('#fee_settings_icon').css('background-position', '0 '+(checked==1?'-32px':'0'));
+			$('#fee_settings_icon').css('background-position', '0 '+(checked ? '-32px' : '0'));
 			$(this).data('checked', checked);
 
-			$.cookie('fee_checked', checked, { 'domain' : feeCookieDomain });
+			//$.cookie('fee_checked', checked, { 'domain' : feeCookieDomain });
 			
-			if (checked == 1)
+			if (checked)
 			{
 				$('.fe_editor').addClass('fee_editable');
 				
 				$('.fe_editor').bind('mouseenter', function(e)
 				{
-					data = JSON.parse($(this).attr('data-fee'));
-
-					//$(this).prepend(feeToolbar);
+//					data = JSON.parse($(this).data('fee'));
+					data = $(this).data('fee');
 
 					if (data.content != undefined)
 					{
 						if (data.contentTitle != undefined)
 						{
-							$('#fee_content_edit').attr('href', 'contao/main.php?do='+data.do+'&table=tl_content&act=edit&fee=1&rt='+data.rt+'&id='+data.content);
-							$('#fee_content_edit').attr('data-statusbar', data.contentTitle);
+							$('#fee_content_edit').data('href', 'contao/main.php?do='+data.do+'&table=tl_content&act=edit&fee=1&rt='+data.rt+'&id='+data.content);
+							$('#fee_content_edit').data('statusbar', data.contentTitle);
 
 							$('#fee_statusbar').text(data.contentTitle);
 						}
@@ -95,8 +118,8 @@
 
 						if (data.contentAddTitle != undefined)
 						{
-							$('#fee_content_add').attr('href', 'contao/main.php?do='+data.do+'&table=tl_content&act=create&fee=1&mode=1&pid='+data.content+'&id='+data.article+'&rt='+data.rt);
-							$('#fee_content_add').attr('data-statusbar', data.contentAddTitle);
+							$('#fee_content_add').data('href', 'contao/main.php?do='+data.do+'&table=tl_content&act=create&fee=1&mode=1&pid='+data.content+'&id='+data.article+'&rt='+data.rt);
+							$('#fee_content_add').data('statusbar', data.contentAddTitle);
 							$('#fee_content_add_item').css('display', 'inline-block');
 						}
 						else
@@ -110,10 +133,10 @@
 					{
 						if (data.newsTitle != undefined)
 						{
-							$('#fee_content_edit').attr('href', 'contao/main.php?do=news&table=tl_news&act=edit&fee=1&rt='+data.rt+'&id='+data.news);
-							$('#fee_content_edit').attr('data-statusbar', data.newsTitle);
-							$('#fee_news_edit').attr('href', 'contao/main.php?do=news&table=tl_news&id='+data.newsArchive+'&rt='+data.rt);
-							$('#fee_news_edit').attr('data-statusbar', data.newsArchiveTitle);
+							$('#fee_content_edit').data('href', 'contao/main.php?do=news&table=tl_news&act=edit&fee=1&rt='+data.rt+'&id='+data.news);
+							$('#fee_content_edit').data('statusbar', data.newsTitle);
+							$('#fee_news_edit').data('href', 'contao/main.php?do=news&table=tl_news&id='+data.newsArchive+'&rt='+data.rt);
+							$('#fee_news_edit').data('statusbar', data.newsArchiveTitle);
 
 							$('#fee_news_edit_item').css('display', 'inline-block');
 							
@@ -130,8 +153,8 @@
 
 					if (data.articleTitle != undefined)
 					{
-						$('#fee_article_edit').attr('href', 'contao/main.php?do=article&table=tl_content&rt='+data.rt+'&id='+data.article);
-						$('#fee_article_edit').attr('data-statusbar', data.articleTitle);
+						$('#fee_article_edit').data('href', 'contao/main.php?do=article&table=tl_content&rt='+data.rt+'&id='+data.article);
+						$('#fee_article_edit').data('statusbar', data.articleTitle);
 					}
 					else
 					{
@@ -140,8 +163,8 @@
 
 					if (data.pageTitle != undefined)
 					{
-						$('#fee_page_edit').attr('href', 'contao/main.php?do=page&act=edit&rt='+data.rt+'&id='+data.page);
-						$('#fee_page_edit').attr('data-statusbar', data.pageTitle);
+						$('#fee_page_edit').data('href', 'contao/main.php?do=page&act=edit&rt='+data.rt+'&id='+data.page);
+						$('#fee_page_edit').data('statusbar', data.pageTitle);
 					}
 					else
 					{
@@ -202,13 +225,18 @@
 			}
 		};
 
-		state = $.cookie('fee_checked');
+		var state = isFeeCookie('FEE_CHECKED', '1');
 
-		feeSettings.setState((state=='null' ? 0 : state), false);
+		feeSettings.setState(state);
 	
 		feeSettings.bind('click', function(e)
 		{
-			feeSettings.setState(($('#fee_settings').data('checked')==1 ? 0 : 1), true);
+			var state = $('#fee_settings').data('checked');
+
+			state = !state;
+
+			setFeeCookie('FEE_CHECKED', state);
+			feeSettings.setState(state, true);
 		});
 	
 
@@ -223,19 +251,19 @@
 
 		$(document.body).append(feePreview);
 
-		$('#fee_preview_icon').css('background-position', '0 '+($.cookie('FE_PREVIEW')==1?'-32px':'0'));
+		$('#fee_preview_icon').css('background-position', '0 '+(isFeeCookie('FE_PREVIEW', '1') ? '-32px' : '0'));
 	
 		feePreview.bind('click', function(e)
 		{
-			if ($.cookie('FE_PREVIEW') == 1)
+			if (isFeeCookie('FE_PREVIEW', '1'))
 			{
-				$.cookie('FE_PREVIEW', '', { 'domain' : feeCookieDomain });
+				setFeeCookie('FE_PREVIEW', false);
 			}
 			else
 			{
-				$.cookie('FE_PREVIEW', '1', { 'domain' : feeCookieDomain });
+				setFeeCookie('FE_PREVIEW', true);
 			}
-	
+
 			document.location.reload();
 		});
 
@@ -255,6 +283,7 @@
 			else if (contentLink != href)
 			{
 				$.colorbox.close();
+				contentLink = false;
 
 				if (reload)
 				{
@@ -264,15 +293,19 @@
 		};
 
 
-		$('a.mediabox').colorbox({
+		$('span.mediabox').colorbox({
 			iframe : true,
 			rel : false,
 			arrowKey : false,
 			fixed : true,
 			opacity: 0.5,
+			href: function()
+			{
+				return $(this).data('href');
+			},
 			innerWidth: function()
 			{
-				if ($(this).attr('data-mediabox') == 'content')
+				if ($(this).data('mediabox') == 'content')
 				{
 					return '780px';
 				}
@@ -284,7 +317,9 @@
 			innerHeight: '95%',
 			onLoad: function()
 			{
-				if ($(this).attr('data-mediabox') == 'content')
+				contentLink = false;
+
+				if ($(this).data('mediabox') == 'content')
 				{
 					window.onLoadContaoBackend = onLoadContaoBackend;
 				}
@@ -295,15 +330,15 @@
 			}
 		});
 
-		$('#fee_toolbar a').bind('click', function(e)
+		$('#fee_toolbar span').bind('click', function(e)
 		{
 			feeToolbar.css('visibility', 'hidden');
 		});
 		
-		$('#fee_toolbar a')
+		$('#fee_toolbar span')
 			.bind('mouseenter', function(e)
 			{
-				$('#fee_statusbar').text($(this).attr('data-statusbar'));
+				$('#fee_statusbar').text($(this).data('statusbar'));
 			});
 
 		$('#fee_content_edit')

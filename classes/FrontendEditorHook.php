@@ -33,7 +33,7 @@ class FrontendEditorHook extends \Frontend
 		#$this->isActive = $this->getLoginStatus('BE_USER_AUTH');
 
 		$this->strIgnoreClasses = str_ireplace(array(',', '-'), array('|', '\-'), $GLOBALS['TL_CONFIG']['frontendEditorIgnoreClasses']);
-		$this->arrIgnoreContent = explode(',', $GLOBALS['TL_CONFIG']['frontendEditorIgnoreContent']);
+		$this->arrIgnoreContent = explode(',', $GLOBALS['TL_CONFIG']['frontendEditorIgnoreContent'].',autoLayoutStart,autoLayoutSeparator,autoLayoutStop');
 
 		parent::__construct();
 	}
@@ -98,18 +98,20 @@ class FrontendEditorHook extends \Frontend
 				define('TL_ASSETS_URL', $GLOBALS['TL_CONFIG']['frontendEditorAssetsUrl']);
 			}
 
-			$GLOBALS['TL_CSS'][] = TL_ASSETS_URL.'assets/jquery/colorbox/'. COLORBOX .'/css/colorbox.min.css||static';
-
 			if (version_compare(VERSION, '3.1', '>='))
 			{
+/*
+				$objTemplate = new \FrontendTemplate('fee_dialog');
+
+				$GLOBALS['TL_BODY'][] = $objTemplate->parse();
+				$GLOBALS['TL_BODY'][] = '<script src="system/modules/frontend_editor/assets/scripts/fee.js"></script>';
+*/
 				$GLOBALS['TL_BODY'][] = '<script src="'.TL_ASSETS_URL.'assets/jquery/colorbox/'.COLORBOX.'/js/colorbox.min.js"></script>';
-				$GLOBALS['TL_BODY'][] = '<script src="system/modules/frontend_editor/assets/jquery-cookie/jquery.cookie.js"></script>';
 				$GLOBALS['TL_BODY'][] = '<script src="system/modules/frontend_editor/assets/scripts/jquery_fee.js"></script>';
 			}
 			else
 			{
 				$GLOBALS['TL_JAVASCRIPT'][] = TL_ASSETS_URL.'assets/jquery/colorbox/'. COLORBOX .'/js/colorbox.min.js';
-				$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/frontend_editor/assets/jquery-cookie/jquery.cookie.js';
 				$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/frontend_editor/assets/scripts/jquery_fee.js';
 			}
 		}

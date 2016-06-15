@@ -1,3 +1,4 @@
+
 #fee_settings
 {
 	position: fixed;
@@ -22,7 +23,8 @@
 	width: 32px;
 	height: 32px;
 	margin: 0;
-	background: #fff url('../icons/fee_state.png') no-repeat 0 0;
+	background: #fff url('../icons/fee_state@2x.png') no-repeat 0 0;
+	background-size: 32px 64px;
 }
 #fee_settings_icon:hover
 {
@@ -53,7 +55,8 @@
 	width: 32px;
 	height: 32px;
 	margin: 0;
-	background: url('../icons/preview_state.png') no-repeat 0 0 #fff;
+	background: url('../icons/preview_state@2x.png') no-repeat 0 0 #fff;
+	background-size: 32px 64px;
 }
 #fee_preview_icon:hover
 {
@@ -102,10 +105,12 @@
 	list-style-type: none !important;
 	line-height: 0 !important;
 }
-#fee_toolbar a
+#fee_toolbar a,
+#fee_toolbar span
 {
 	display: inline-block;
 	padding: 0 !important;
+	cursor: pointer;
 	width:  32px;
 	height:  32px;
 	line-height: 0!important;
@@ -113,43 +118,37 @@
 	background-color: transparent;
 	background-position: 0 0;
 }
-#fee_toolbar a:hover
+#fee_toolbar a:hover,
+#fee_toolbar span:hover
 {
 	background-position: 0 -32px;
 }
 
 #fee_content_edit
 {
-	background-image: url('../icons/edit_content.png');
+	background-image: url('../icons/edit_content@2x.png');
+	background-size: 32px 64px;
 }
 #fee_article_edit
 {
-	background-image: url('../icons/edit_article.png');
+	background-image: url('../icons/edit_article@2x.png');
+	background-size: 32px 64px;
 }
 #fee_page_edit
 {
-	background-image: url('../icons/edit_page.png');
+	background-image: url('../icons/edit_page@2x.png');
+	background-size: 32px 64px;
 }
 #fee_news_edit
 {
-	background-image: url('../icons/edit_article.png');
+	background-image: url('../icons/edit_article@2x.png');
+	background-size: 32px 64px;
 }
 #fee_content_add
 {
-	background-image: url('../icons/add_content.png');
+	background-image: url('../icons/add_content@2x.png');
+	background-size: 32px 64px;
 }
-
-/*
-.fee_toolbar li a img
-{
-	margin: 0!important;
-	padding: 0!important;
-	border: none !important;
-	-moz-box-shadow: none !important;
-	-webkit-box-shadow: none !important;
-	box-shadow: none !important;
-}
-*/
 
 #fee_toolbar p
 {
@@ -158,9 +157,12 @@
 	box-sizing: content-box;
 	height: 18px !important; /* hinzugefügt wg. besserer Lesbarkeit*/
 	margin: 0 !important;
-	min-width: 180px;
-	padding: 4px 4px 2px 4px!important;
-	border: 3px solid #4a4a4a;
+	min-width: 200px;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
+	padding: 6px 8px 5px 8px !important;
+/*	border: 3px solid #4a4a4a; */
 	/* border-top: none; */
 	/* border-bottom-right-radius: 5px; */
 	background: none repeat scroll 0 0 #6a6a6a;
@@ -170,7 +172,8 @@
 	text-transform: none;
 	text-align: left;
 }
-#fee_toolbar a::after
+#fee_toolbar a::after,
+#fee_toolbar span::after
 {
 	content: "" !important;
 }

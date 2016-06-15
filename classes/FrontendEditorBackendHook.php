@@ -7,7 +7,7 @@
  * PHP version 5
  * @copyright  Lingo4you 2014
  * @author     Mario Müller <http://www.lingolia.com/>
- * @version    2.2.5
+ * @version    2.2.6
  * @package    FrontendEditor
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
@@ -18,9 +18,10 @@ class FrontendEditorBackendHook extends \Controller
 	{
 		if ($strTemplate == 'be_main')
 		{
-			if ($this->Input->get('fee') == 1 || $this->Input->post('fee') == 1)
+			if (\Input::get('fee') == 1 || \Input::post('fee') == 1)
 			{
-				$strContent = preg_replace('~<div id="header".*<div id="container"~is', '<div id="container" style="width:766px;margin-left:20px;"', $strContent);
+				$strContent = preg_replace('~<body~is', '<body style="background:none"', $strContent);
+				$strContent = preg_replace('~<div id="header".*<div id="container"~is', '<div id="container" style="width:766px;margin-left:20px"', $strContent);
 				$strContent = preg_replace('~<div id="left".*<div id="main"~is', '<div id="main" style="margin-left:0; margin-top:0;"', $strContent);
 				$strContent = preg_replace('~(<div id="footer")~is', '$1 style="display:none"', $strContent);
 	
@@ -36,7 +37,7 @@ class FrontendEditorBackendHook extends \Controller
 				$strContent = str_replace('<script src="system/modules/easy_themes/html/easy_themes.js"></script>', '', $strContent);
 			}
 
-			$strContent = str_replace('</body>', '<script>if (parent.onLoadContaoBackend != undefined) { parent.onLoadContaoBackend("'.$_SERVER['REQUEST_URI'].'", '.($GLOBALS['TL_CONFIG']['frontendEditorReload'] ? 'true' : 'false').'); }</script></body>', $strContent);
+			$strContent = str_replace('</body>', '<script>if (parent.onLoadContaoBackend !== undefined) { parent.onLoadContaoBackend("'.$_SERVER['REQUEST_URI'].'", '.($GLOBALS['TL_CONFIG']['frontendEditorReload'] ? 'true' : 'false').'); }</script></body>', $strContent);
 		}
 
 		return $strContent;
